@@ -171,13 +171,13 @@ attendance["Date"] = pd.to_datetime(attendance["Date"], errors="coerce")
 st.sidebar.header("🔍 Filters")
 
 gender_options = sorted([x for x in members["Gender"].dropna().unique() if str(x).strip() != ""])
-province_options = sorted([x for x in members["Province"].dropna().unique() if str(x).strip() != ""])
-region_options = sorted([x for x in members["Region"].dropna().unique() if str(x).strip() != ""])
+#province_options = sorted([x for x in members["Province"].dropna().unique() if str(x).strip() != ""])
+#region_options = sorted([x for x in members["Region"].dropna().unique() if str(x).strip() != ""])
 employment_options = sorted([x for x in members["Employment Status"].dropna().unique() if str(x).strip() != ""])
 
 gender = st.sidebar.multiselect("Gender", gender_options, default=gender_options)
-province = st.sidebar.multiselect("Province", province_options, default=province_options)
-region = st.sidebar.multiselect("Region", region_options, default=region_options)
+#province = st.sidebar.multiselect("Province", province_options, default=province_options)
+#region = st.sidebar.multiselect("Region", region_options, default=region_options)
 employment = st.sidebar.multiselect("Employment Status", employment_options, default=employment_options)
 
 date_range = st.sidebar.date_input("Select Date Range", [])
@@ -189,10 +189,10 @@ members_f = members.copy()
 
 if gender:
     members_f = members_f[members_f["Gender"].isin(gender)]
-if province:
-    members_f = members_f[members_f["Province"].isin(province)]
-if region:
-    members_f = members_f[members_f["Region"].isin(region)]
+#if province:
+    #members_f = members_f[members_f["Province"].isin(province)]
+#if region:
+   # members_f = members_f[members_f["Region"].isin(region)]
 if employment:
     members_f = members_f[members_f["Employment Status"].isin(employment)]
 
@@ -338,19 +338,19 @@ with tab1:
             st.info("No data available")
         st.markdown('</div>', unsafe_allow_html=True)
 
-    c4, c5, c6, c7 = st.columns(4)
+    # c4, c5, c6, c7 = st.columns(4)
 
-    with c4:
-        st.markdown('<div class="chart-card">', unsafe_allow_html=True)
-        prov = members_f["Province"].value_counts().reset_index()
-        prov.columns = ["Province", "Count"]
-        if not prov.empty:
-            fig = px.bar(prov, x="Province", y="Count", text="Count")
-            fig.update_traces(textposition="outside")
-            st.plotly_chart(clean_chart(fig), use_container_width=True)
-        else:
-            st.info("No data available")
-        st.markdown('</div>', unsafe_allow_html=True)
+    #with c4:
+        #st.markdown('<div class="chart-card">', unsafe_allow_html=True)
+        #prov = members_f["Province"].value_counts().reset_index()
+        #prov.columns = ["Province", "Count"]
+        #if not prov.empty:
+         #   fig = px.bar(prov, x="Province", y="Count", text="Count")
+          #  fig.update_traces(textposition="outside")
+           # st.plotly_chart(clean_chart(fig), use_container_width=True)
+        #else:
+         #   st.info("No data available")
+        #st.markdown('</div>', unsafe_allow_html=True)
 
     with c5:
         st.markdown('<div class="chart-card">', unsafe_allow_html=True)
@@ -364,29 +364,29 @@ with tab1:
             st.info("No data available")
         st.markdown('</div>', unsafe_allow_html=True)
 
-    with c6:
-        st.markdown('<div class="chart-card">', unsafe_allow_html=True)
-        reg = members_f["Region"].value_counts().reset_index()
-        reg.columns = ["Region", "Count"]
-        if not reg.empty:
-            fig = px.bar(reg, x="Region", y="Count", text="Count")
-            fig.update_traces(textposition="outside")
-            st.plotly_chart(clean_chart(fig), use_container_width=True)
-        else:
-            st.info("No data available")
-        st.markdown('</div>', unsafe_allow_html=True)
+    #with c6:
+     #   st.markdown('<div class="chart-card">', unsafe_allow_html=True)
+      #  reg = members_f["Region"].value_counts().reset_index()
+       # reg.columns = ["Region", "Count"]
+        #if not reg.empty:
+         #   fig = px.bar(reg, x="Region", y="Count", text="Count")
+          #  fig.update_traces(textposition="outside")
+           # st.plotly_chart(clean_chart(fig), use_container_width=True)
+        #else:
+         #   st.info("No data available")
+        #st.markdown('</div>', unsafe_allow_html=True)
 
-    with c7:
-        st.markdown('<div class="chart-card">', unsafe_allow_html=True)
-        br = members_f["Branch"].value_counts().reset_index()
-        br.columns = ["Branch", "Count"]
-        if not br.empty:
-            fig = px.bar(br, x="Branch", y="Count", text="Count")
-            fig.update_traces(textposition="outside")
-            st.plotly_chart(clean_chart(fig), use_container_width=True)
-        else:
-            st.info("No data available")
-        st.markdown('</div>', unsafe_allow_html=True)
+    #with c7:
+     #   st.markdown('<div class="chart-card">', unsafe_allow_html=True)
+      #  br = members_f["Branch"].value_counts().reset_index()
+       # br.columns = ["Branch", "Count"]
+        #if not br.empty:
+         #   fig = px.bar(br, x="Branch", y="Count", text="Count")
+          #  fig.update_traces(textposition="outside")
+           # st.plotly_chart(clean_chart(fig), use_container_width=True)
+        #else:
+         #   st.info("No data available")
+        #st.markdown('</div>', unsafe_allow_html=True)
 
 # ============================
 # GROWTH
