@@ -286,7 +286,7 @@ with k8:
 # TABS
 # ----------------------------
 tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs([
-    "📊 Dashboard",
+    "📊 Demographics",
     "📈 Growth",
     "👥 Total Members",
     "📋 Attendance",
@@ -296,7 +296,7 @@ tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs([
 ])
 
 # ============================
-# DASHBOARD
+# Demographics
 # ============================
 with tab1:
     c1, c2, c3 = st.columns(3)
