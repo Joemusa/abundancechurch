@@ -352,17 +352,17 @@ with tab1:
          #   st.info("No data available")
         #st.markdown('</div>', unsafe_allow_html=True)
 
-    with c5:
-        st.markdown('<div class="chart-card">', unsafe_allow_html=True)
-        serv = attendance_f["Service"].value_counts().reset_index()
-        serv.columns = ["Service", "Count"]
-        if not serv.empty:
-            fig = px.bar(serv, x="Service", y="Count", text="Count")
-            fig.update_traces(textposition="outside")
-            st.plotly_chart(clean_chart(fig), use_container_width=True)
-        else:
-            st.info("No data available")
-        st.markdown('</div>', unsafe_allow_html=True)
+    #with c5:
+     #   st.markdown('<div class="chart-card">', unsafe_allow_html=True)
+      #  serv = attendance_f["Service"].value_counts().reset_index()
+       # serv.columns = ["Service", "Count"]
+        #if not serv.empty:
+         #   fig = px.bar(serv, x="Service", y="Count", text="Count")
+          #  fig.update_traces(textposition="outside")
+           # st.plotly_chart(clean_chart(fig), use_container_width=True)
+        #else:
+         #   st.info("No data available")
+       # st.markdown('</div>', unsafe_allow_html=True)
 
     #with c6:
      #   st.markdown('<div class="chart-card">', unsafe_allow_html=True)
