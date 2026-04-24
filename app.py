@@ -330,6 +330,7 @@ with tab1:
 
     with c1:
         st.markdown('<div class="chart-card">', unsafe_allow_html=True)
+        st.markdown("<h4 style='color:white;'>Gender Distribution</h4>", unsafe_allow_html=True)
         gender_data = members_f["Gender"].dropna()
         gender_data = gender_data[gender_data.astype(str).str.strip() != ""]
         if not gender_data.empty:
