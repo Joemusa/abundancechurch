@@ -4,8 +4,8 @@ import gspread
 import plotly.express as px
 from google.oauth2.service_account import Credentials
 from twilio.rest import Client
-import inspect
-st.write(Client)
+#import inspect
+#st.write(Client)
 import twilio
 st.write("Twilio version:", twilio.__version__)
 client = Client(
