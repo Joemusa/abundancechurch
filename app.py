@@ -426,10 +426,8 @@ with tab1:
 # ============================
 with tab2:
     k1, k2, k3, k4, = st.columns(4)
-    
     with k1:
         daily_target = 500
-
         # Current total members
         current = members_f["MemberID"].nunique()
 
@@ -443,8 +441,8 @@ with tab2:
 
         # Progress toward daily target
         progress = (growth / daily_target * 100) if daily_target > 0 else 0
-
-    show_kpi(
+        
+        show_kpi(
             "Growth Rate",
             f"{growth_rate:.1f}%",
             f"+{growth} today | Target: {daily_target} ({progress:.1f}%)"
