@@ -447,7 +447,7 @@ with tab2:
            "Growth Rate",
            f"{growth_rate:.1f}%",
            f"+{growth} today | Target: {daily_target}"
-        )
+       )
 
         # ✅ NOW correctly inside k1
         st.progress(min(growth / daily_target, 1.0))
