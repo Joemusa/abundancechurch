@@ -5,11 +5,14 @@ import plotly.express as px
 from google.oauth2.service_account import Credentials
 from twilio.rest import Client
 
-# Initialize Twilio client
-client = Client(
-    st.secrets["TWILIO_SID"],
-    st.secrets["TWILIO_TOKEN"]
-)
+if "TWILIO_SID" in st.secrets:
+    client = Client(
+        st.secrets["TWILIO_SID"],
+        st.secrets["TWILIO_TOKEN"]
+    )
+else:
+    client = None
+
 
 # ----------------------------
 # CONFIG
