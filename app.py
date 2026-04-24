@@ -533,7 +533,7 @@ with tab8:
     selected_leaders = st.multiselect("Select Leader(s)", leader_options)
 
     if selected_leaders:
-        sms_df = members[members["Leader"].isin(selected_leaders)]
+        sms_df = members[members["Status"].isin(selected_leaders)]
     else:
         sms_df = members.copy()
 
