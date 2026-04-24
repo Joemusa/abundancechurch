@@ -2,6 +2,8 @@ import streamlit as st
 import pandas as pd
 import gspread
 import plotly.express as px
+import requests
+
 from google.oauth2.service_account import Credentials
 from twilio.rest import Client
 #import inspect
@@ -542,40 +544,53 @@ with tab7:
 "========================="
 "BULK SMS"
 "========================="
-with tab8:
-    st.subheader("📩 Send Bulk SMS")
 
-    # Select recipients
+with tab8:
+    st.subheader("📩 Send Bulk SMS (BulkSMS)")
+
     leader_options = sorted(members["Leader"].dropna().unique())
     selected_leaders = st.multiselect("Select Leader(s)", leader_options)
 
-    # Filter members
     if selected_leaders:
         sms_df = members[members["Leader"].isin(selected_leaders)]
     else:
         sms_df = members.copy()
 
     recipients = sms_df["Cellphone"].dropna().unique()
-    #recipients = ["+27834544089"]  # 👈 your number
 
-    st.write(f"Recipients: {len(recipients)}")
+    def format_number(num):
+        num = str(num)
+        if num.startswith("0"):
+            return "27" + num[1:]
+        return num
 
-    # Message input
+    recipients = [format_number(n) for n in recipients]
+
     message = st.text_area("Message", max_chars=160)
 
-    # 👉 THIS IS WHERE YOUR CODE GOES
-    if st.button("Send SMS", key="send_sms_button"):
+    if st.button("Send SMS", key="bulksms"):
         for number in recipients:
-            try:
-                client.messages.create(
-                    body=message,
-                    from_=st.secrets["TWILIO_PHONE"],
-                    to=number
-                )
-            except Exception as e:
-                st.error(f"Failed for {number}: {e}")
+            url = "https://api.bulksms.com/v1/messages"
 
-        st.success("Bulk SMS sent successfully!")
+            payload = {
+                "to": number,
+                "body": message
+            }
+
+            try:
+                response = requests.post(
+                    url,
+                    json=payload,
+                    auth=(st.secrets["BULKSMS_USER"], st.secrets["BULKSMS_PASS"])
+                )
+
+                if response.status_code in [200, 201]:
+                    st.success(f"Sent to {number}")
+                else:
+                    st.error(f"Failed {number}: {response.text}")
+
+            except Exception as e:
+                st.error(f"Error {number}: {e}")
 # ----------------------------
 # LOGOUT
 # ----------------------------
