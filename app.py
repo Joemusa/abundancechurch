@@ -428,27 +428,27 @@ with tab2:
     k1, k2, k3, k4, = st.columns(4)
     
     with k1:
-    daily_target = 500
+        daily_target = 500
 
-    # Current total members
-    current = members_f["MemberID"].nunique()
+        # Current total members
+        current = members_f["MemberID"].nunique()
 
-    # Previous total (simulate yesterday or previous snapshot)
-    # 👉 Replace this later with real previous data
-    previous = current - 10  # example placeholder
+        # Previous total (simulate yesterday or previous snapshot)
+        # 👉 Replace this later with real previous data
+        previous = current - 10  # example placeholder
 
-    # Growth calculation
-    growth = current - previous
-    growth_rate = (growth / previous * 100) if previous > 0 else 0
+        # Growth calculation
+        growth = current - previous
+        growth_rate = (growth / previous * 100) if previous > 0 else 0
 
-    # Progress toward daily target
-    progress = (growth / daily_target * 100) if daily_target > 0 else 0
+        # Progress toward daily target
+        progress = (growth / daily_target * 100) if daily_target > 0 else 0
 
-    show_kpi(
-        "Growth Rate",
-        f"{growth_rate:.1f}%",
-        f"+{growth} today | Target: {daily_target} ({progress:.1f}%)"
-    )
+        show_kpi(
+            "Growth Rate",
+            f"{growth_rate:.1f}%",
+            f"+{growth} today | Target: {daily_target} ({progress:.1f}%)"
+        )
 
     # Progress bar (optional but powerful)
     st.progress(min(growth / daily_target, 1.0))
