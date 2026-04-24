@@ -544,7 +544,8 @@ with tab8:
     else:
         sms_df = members.copy()
 
-    recipients = sms_df["Cellphone"].dropna().unique()
+    #recipients = sms_df["Cellphone"].dropna().unique()
+    recipients = ["+27834544089"]  # 👈 your number
 
     st.write(f"Recipients: {len(recipients)}")
 
