@@ -561,7 +561,7 @@ with tab8:
     message = st.text_area("Message", max_chars=160)
 
     # 👉 THIS IS WHERE YOUR CODE GOES
-    if st.button("Send SMS"):
+    if st.button("Send SMS", key="send_sms_button"):
         for number in recipients:
             try:
                 client.messages.create(
