@@ -146,7 +146,7 @@ for col in ["Date", "Service", "MemberID", "Name", "Status", "Contact"]:
     if col not in attendance.columns:
         attendance[col] = ""
         
-for col in ["Date","Name", "Surname", "Amount", "Cellphone", "MemberID"]:
+for col in ["Date","Name", "Surname", "Cellphone", "MemberID"]:
     if col not in tithing.columns:
         tithing[col] = ""
 
