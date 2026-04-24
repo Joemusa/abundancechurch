@@ -444,7 +444,7 @@ with tab2:
         # Progress toward daily target
         progress = (growth / daily_target * 100) if daily_target > 0 else 0
 
-        show_kpi(
+    show_kpi(
             "Growth Rate",
             f"{growth_rate:.1f}%",
             f"+{growth} today | Target: {daily_target} ({progress:.1f}%)"
