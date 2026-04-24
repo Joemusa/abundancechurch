@@ -426,7 +426,6 @@ with tab1:
 # ============================
 with tab2:
     k1 = st.columns(1)
-
     with k1:
         daily_target = 500
 
@@ -446,8 +445,7 @@ with tab2:
         st.caption(f"Progress: {progress:.1f}%")
         st.progress(min(growth / daily_target, 1.0))
    
-    st.markdown('</div>', unsafe_allow_html=True)
-
+ 
 # ============================
 # MEMBERS TABLE
 # ============================
