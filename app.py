@@ -324,7 +324,8 @@ with tab1:
     with k8:
         total_tithing = tithing["Amount"].sum()
         show_kpi("Tithes", f"R {total_tithing:,.0f}")
-        
+
+    st.markdown("<br><br>", unsafe_allow_html=True)
     c1, c2, c3 = st.columns(3)
 
     with c1:
