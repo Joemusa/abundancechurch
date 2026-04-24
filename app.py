@@ -425,15 +425,16 @@ with tab1:
 # GROWTH
 # ============================
 with tab2:
-    k1, k2, k3, k4, = st.columns(4)
+    k1, k2, k3, k4 = st.columns(4)
+
     with k1:
         daily_target = 500
+
         # Current total members
         current = members_f["MemberID"].nunique()
 
         # Previous total (simulate yesterday or previous snapshot)
-        # 👉 Replace this later with real previous data
-        previous = current - 10  # example placeholder
+        previous = current - 10  # placeholder
 
         # Growth calculation
         growth = current - previous
@@ -448,8 +449,8 @@ with tab2:
             f"+{growth} today | Target: {daily_target} ({progress:.1f}%)"
         )
 
-    # Progress bar (optional but powerful)
-    st.progress(min(growth / daily_target, 1.0))
+        # ✅ NOW correctly inside k1
+        st.progress(min(growth / daily_target, 1.0))
     with k2:
         show_kpi("Male", len(members_f[members_f["Gender"] == "Male"]))
 
