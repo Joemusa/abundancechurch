@@ -426,8 +426,15 @@ with tab1:
 # ============================
 with tab2:
     k1, k2, k3, k4, = st.columns(4)
+    
     with k1:
-        show_kpi("Total Members", members_f["MemberID"].nunique())
+        target = 500
+        current = members_f["MemberID"].nunique()
+        progress = (current / target)*100
+        show_kpi(
+            "Growth", current, f"Target:{target} ({progress:.1f}%)"
+        )
+        
 
     with k2:
         show_kpi("Male", len(members_f[members_f["Gender"] == "Male"]))
