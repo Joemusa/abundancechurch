@@ -3,6 +3,13 @@ import pandas as pd
 import gspread
 import plotly.express as px
 from google.oauth2.service_account import Credentials
+from twilio.rest import Client
+
+# Initialize Twilio client
+client = Client(
+    st.secrets["TWILIO_SID"],
+    st.secrets["TWILIO_TOKEN"]
+)
 
 # ----------------------------
 # CONFIG
@@ -541,9 +548,19 @@ with tab8:
     # Message input
     message = st.text_area("Message", max_chars=160)
 
+    # 👉 THIS IS WHERE YOUR CODE GOES
     if st.button("Send SMS"):
-        st.success("SMS sent (simulation)")
-        
+        for number in recipients:
+            try:
+                client.messages.create(
+                    body=message,
+                    from_=st.secrets["TWILIO_PHONE"],
+                    to=number
+                )
+            except Exception as e:
+                st.error(f"Failed for {number}: {e}")
+
+        st.success("Bulk SMS sent successfully!")
 # ----------------------------
 # LOGOUT
 # ----------------------------
