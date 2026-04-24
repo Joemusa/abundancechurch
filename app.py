@@ -5,26 +5,7 @@ import plotly.express as px
 import requests
 
 from google.oauth2.service_account import Credentials
-from twilio.rest import Client
-#import inspect
-#st.write(Client)
-import twilio
-st.write("Twilio version:", twilio.__version__)
-client = Client(
-    st.secrets["TWILIO_SID"],
-    st.secrets["TWILIO_TOKEN"]
-)
 
-if st.button("Send SMS"):
-    try:
-        message = client.messages.create(
-            body="Test message",
-            from_=st.secrets["TWILIO_PHONE"],
-            to="+27834544089"
-        )
-        st.success(f"Sent! SID: {message.sid}")
-    except Exception as e:
-        st.error(str(e))
 
 
 # ----------------------------
