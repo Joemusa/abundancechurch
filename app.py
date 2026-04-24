@@ -5,13 +5,21 @@ import plotly.express as px
 from google.oauth2.service_account import Credentials
 from twilio.rest import Client
 
-if "TWILIO_SID" in st.secrets:
-    client = Client(
-        st.secrets["TWILIO_SID"],
-        st.secrets["TWILIO_TOKEN"]
-    )
-else:
-    client = None
+client = Client(
+    st.secrets["TWILIO_SID"],
+    st.secrets["TWILIO_TOKEN"]
+)
+
+if st.button("Send SMS"):
+    try:
+        message = client.messages.create(
+            body="Test message",
+            from_=st.secrets["TWILIO_PHONE"],
+            to="+27834544089"
+        )
+        st.success(f"Sent! SID: {message.sid}")
+    except Exception as e:
+        st.error(str(e))
 
 
 # ----------------------------
@@ -544,8 +552,8 @@ with tab8:
     else:
         sms_df = members.copy()
 
-    #recipients = sms_df["Cellphone"].dropna().unique()
-    recipients = ["+27834544089"]  # 👈 your number
+    recipients = sms_df["Cellphone"].dropna().unique()
+    #recipients = ["+27834544089"]  # 👈 your number
 
     st.write(f"Recipients: {len(recipients)}")
 
