@@ -425,7 +425,7 @@ with tab1:
 # GROWTH
 # ============================
 with tab2:
-    k1, k2, k3, k4 = st.columns(4)
+    k1 = st.columns(1)
 
     with k1:
         daily_target = 500
@@ -445,34 +445,7 @@ with tab2:
 
         st.caption(f"Progress: {progress:.1f}%")
         st.progress(min(growth / daily_target, 1.0))
-    with k2:
-        show_kpi("Male", len(members_f[members_f["Gender"] == "Male"]))
-
-    with k3:
-        show_kpi("Female", len(members_f[members_f["Gender"] == "Female"]))
-
-    with k4:
-        show_kpi("Present Members", len(attendance_f))
-        
-    st.markdown('<div class="chart-card">', unsafe_allow_html=True)
-
-    mem_base = members.dropna(subset=["Timestamp"]).copy()
-    att_base = attendance.dropna(subset=["Date"]).copy()
-
-    mem_growth = mem_base.groupby(mem_base["Timestamp"].dt.date).size().reset_index(name="Members")
-    mem_growth = mem_growth.rename(columns={"Timestamp": "Date"})
-
-    att_growth = att_base.groupby(att_base["Date"].dt.date).size().reset_index(name="Attendance")
-    att_growth = att_growth.rename(columns={"Date": "Date"})
-
-    growth = pd.merge(mem_growth, att_growth, on="Date", how="outer").fillna(0)
-
-    if not growth.empty:
-        fig = px.line(growth, x="Date", y=["Members", "Attendance"], markers=True)
-        st.plotly_chart(clean_chart(fig), use_container_width=True)
-    else:
-        st.info("No growth data available")
-
+   
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ============================
