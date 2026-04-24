@@ -519,7 +519,7 @@ with tab7:
     )
 
 "========================="
-"BULK SMS
+"BULK SMS"
 "========================="
 with tab8:
     st.subheader("📩 Send Bulk SMS")
