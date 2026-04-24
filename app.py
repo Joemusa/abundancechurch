@@ -300,31 +300,30 @@ tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs([
 # ============================
 with tab1:
     k1, k2, k3, k4, k5, k6, k7, k8 = st.columns(8)
+    with k1:
+        show_kpi("Total Members", members_f["MemberID"].nunique())
 
-with k1:
-    show_kpi("Total Members", members_f["MemberID"].nunique())
+    with k2:
+        show_kpi("Male", len(members_f[members_f["Gender"] == "Male"]))
 
-with k2:
-    show_kpi("Male", len(members_f[members_f["Gender"] == "Male"]))
+    with k3:
+        show_kpi("Female", len(members_f[members_f["Gender"] == "Female"]))
 
-with k3:
-    show_kpi("Female", len(members_f[members_f["Gender"] == "Female"]))
+    with k4:
+        show_kpi("Present Members", len(attendance_f))
 
-with k4:
-    show_kpi("Present Members", len(attendance_f))
+    with k5:
+        show_kpi("New Visitors", len(new_visitors))
 
-with k5:
-    show_kpi("New Visitors", len(new_visitors))
+    with k6:
+        show_kpi("Absent Members", len(members_not_attending))
 
-with k6:
-    show_kpi("Absent Members", len(members_not_attending))
+    with k7:
+        show_kpi("Tithing Members", len(tithing))
 
-with k7:
-    show_kpi("Tithing Members", len(tithing))
-
-with k8:
-    total_tithing = tithing["Amount"].sum()
-    show_kpi("Tithes", f"R {total_tithing:,.0f}")
+    with k8:
+        total_tithing = tithing["Amount"].sum()
+        show_kpi("Tithes", f"R {total_tithing:,.0f}")
     c1, c2, c3 = st.columns(3)
 
     with c1:
