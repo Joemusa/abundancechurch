@@ -562,7 +562,10 @@ with tab8:
                 response = requests.post(
                     url,
                     json=payload,
-                    auth=(st.secrets["BULKSMS_USER"], st.secrets["BULKSMS_PASS"])
+                    headers = {
+                        "Authorization": st.secrets["BULKSMS_AUTH"],
+                        "Content-Type": "application/json"
+                    }
                 )
 
                 if response.status_code in [200, 201]:
