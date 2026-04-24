@@ -466,7 +466,9 @@ with tab4:
 
     with k3:
         show_kpi("Female", len(members_f[members_f["Gender"] == "Female"]))
-
+        
+    st.subheader("Attendance Table")
+    st.dataframe(attendance_f, use_container_width=True)
    
     st.download_button(
         "⬇ Export Attendance",
