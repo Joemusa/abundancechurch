@@ -432,7 +432,9 @@ with tab2:
         current = members_f["MemberID"].nunique()
         progress = (current / target)*100
         show_kpi(
-            "Growth", current, f"Target:{target} ({progress:.1f}%)"
+            "Growth", 
+            current, 
+            f"Target:{target} ({progress:.1f}%)"
         )
         
 
