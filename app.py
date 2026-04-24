@@ -256,7 +256,7 @@ def clean_chart(fig):
 # ----------------------------
 # KPI ROW
 # ----------------------------
-k1, k2, k3, k4, k5, k6, k7, k8 = st.columns(8)
+k1, k2, k3, k4, k5, k6, k7 = st.columns(7)
 
 with k1:
     show_kpi("Total Members", members_f["MemberID"].nunique())
@@ -279,9 +279,9 @@ with k6:
 with k7:
     show_kpi("Tithing Members", len(tithing))
 
-with k8:
-    total_tithing = tithing["Amount"].sum()
-    show_kpi("Tithes", f"R {total_tithing:,.0f}")
+#with k8:
+    #total_tithing = tithing["Amount"].sum()
+    #show_kpi("Tithes", f"R {total_tithing:,.0f}")
 # ----------------------------
 # TABS
 # ----------------------------
