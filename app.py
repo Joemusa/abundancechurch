@@ -123,9 +123,9 @@ if not members.empty:
 if not attendance.empty:
     attendance.columns = attendance.columns.str.strip()
 
-if not tithing.empty:
-    tithing.columns = tithing.columns.str.strip()
-    tithing["Amount"] = pd.to_numeric(tithing["Amount"], errors="coerce")
+#if not tithing.empty:
+    #tithing.columns = tithing.columns.str.strip()
+    #tithing["Amount"] = pd.to_numeric(tithing["Amount"], errors="coerce")
     
 
 members = members.rename(columns={
