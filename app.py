@@ -324,6 +324,7 @@ with tab1:
     with k8:
         total_tithing = tithing["Amount"].sum()
         show_kpi("Tithes", f"R {total_tithing:,.0f}")
+        
     c1, c2, c3 = st.columns(3)
 
     with c1:
@@ -455,23 +456,18 @@ with tab3:
 # ATTENDANCE TABLE
 # ============================
 with tab4:
-    k1, k2, k3, k4, k5, k6, k7, k8 = st.columns(8)
+    k1, k2, k3 = st.columns(3)
 
-with k1:
-    show_kpi("Total Members", members_f["MemberID"].nunique())
+    with k1:
+        show_kpi("Total Members", members_f["MemberID"].nunique())
 
-with k2:
-    show_kpi("Male", len(members_f[members_f["Gender"] == "Male"]))
+    with k2:
+        show_kpi("Male", len(members_f[members_f["Gender"] == "Male"]))
 
-with k3:
-    show_kpi("Female", len(members_f[members_f["Gender"] == "Female"]))
+    with k3:
+        show_kpi("Female", len(members_f[members_f["Gender"] == "Female"]))
 
-with k8:
-    total_tithing = tithing["Amount"].sum()
-    show_kpi("Tithes", f"R {total_tithing:,.0f}")
-    st.subheader("Attendance Table")
-    st.dataframe(attendance_f, use_container_width=True)
-
+   
     st.download_button(
         "⬇ Export Attendance",
         attendance_f.to_csv(index=False),
