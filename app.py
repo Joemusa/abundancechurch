@@ -285,14 +285,15 @@ def clean_chart(fig):
 # ----------------------------
 # TABS
 # ----------------------------
-tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs([
+tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs([
     "📊 Demographics",
     "📈 Growth",
     "👥 Total Members",
     "📋 Attendance",
     "🆕 New Visitors",
     "🚫 Not Attending",
-    "💰 Tithing Members"
+    "💰 Tithing Members",
+    "📩 Bulk SMS"
 ])
 
 # ============================
@@ -516,6 +517,32 @@ with tab7:
         tithing.to_csv(index=False),
         "tithing_members.csv"
     )
+
+"========================="
+"BULK SMS
+"========================="
+with tab8:
+    st.subheader("📩 Send Bulk SMS")
+
+    # Select recipients
+    leader_options = sorted(members["Leader"].dropna().unique())
+    selected_leaders = st.multiselect("Select Leader(s)", leader_options)
+
+    # Filter members
+    if selected_leaders:
+        sms_df = members[members["Leader"].isin(selected_leaders)]
+    else:
+        sms_df = members.copy()
+
+    recipients = sms_df["Cellphone"].dropna().unique()
+
+    st.write(f"Recipients: {len(recipients)}")
+
+    # Message input
+    message = st.text_area("Message", max_chars=160)
+
+    if st.button("Send SMS"):
+        st.success("SMS sent (simulation)")
         
 # ----------------------------
 # LOGOUT
