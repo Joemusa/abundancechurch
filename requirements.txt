@@ -4,4 +4,4 @@ gspread
 oauth2client
 google-auth
 plotly
-twilio
+twilio==8.10.0
