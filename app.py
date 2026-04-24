@@ -175,12 +175,12 @@ attendance["Date"] = pd.to_datetime(attendance["Date"], errors="coerce")
 st.sidebar.header("🔍 Filters")
 
 gender_options = sorted([x for x in members["Gender"].dropna().unique() if str(x).strip() != ""])
-leader_options = sorted([x for x in members["Leader"].dropna().unique() if str(x).strip() != ""])
+leader_options = sorted([x for x in members["Zone Leader"].dropna().unique() if str(x).strip() != ""])
 #region_options = sorted([x for x in members["Region"].dropna().unique() if str(x).strip() != ""])
 employment_options = sorted([x for x in members["Employment Status"].dropna().unique() if str(x).strip() != ""])
 
 gender = st.sidebar.multiselect("Gender", gender_options, default=gender_options)
-leader = st.sidebar.multiselect("Leader", leader_options, default=leader_options)
+leader = st.sidebar.multiselect("Zone Leader", leader_options, default=leader_options)
 #region = st.sidebar.multiselect("Region", region_options, default=region_options)
 employment = st.sidebar.multiselect("Employment Status", employment_options, default=employment_options)
 
@@ -194,7 +194,7 @@ members_f = members.copy()
 if gender:
     members_f = members_f[members_f["Gender"].isin(gender)]
 if leader:
-    members_f = members_f[members_f["Leader"].isin(leader)]
+    members_f = members_f[members_f["Zone Leader"].isin(leader)]
 #if region:
    # members_f = members_f[members_f["Region"].isin(region)]
 if employment:
