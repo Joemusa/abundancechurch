@@ -554,10 +554,12 @@ with tab8:
 #-----------------------------
 # MAP
 # ----------------------------
-members["lat"] = pd.to_numeric(members["lat"], errors="coerce")
-members["lon"] = pd.to_numeric(members["lon"], errors="coerce")
 with tab9:
     st.subheader("🗺️ Member Locations")
+
+    # ✅ Convert to numeric
+    members["lat"] = pd.to_numeric(members["lat"], errors="coerce")
+    members["lon"] = pd.to_numeric(members["lon"], errors="coerce")
 
     df = members_f.dropna(subset=["lat", "lon"])
 
@@ -583,7 +585,7 @@ with tab9:
             tooltip={"text": "{First Name} {Surname}"}
         ))
     else:
-        st.warning("⚠️ No location data available")
+        st.warning("⚠️ No valid location data available")
 
 
 # ----------------------------
