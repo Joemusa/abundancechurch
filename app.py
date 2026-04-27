@@ -8,6 +8,22 @@ from google.oauth2.service_account import Credentials
 
 import pydeck as pdk
 
+from geopy.geocoders import Nominatim
+import time
+
+geolocator = Nominatim(user_agent="church_app")
+
+def get_lat_lon(address):
+    try:
+        location = geolocator.geocode(address)
+        if location:
+            return location.latitude, location.longitude
+    except:
+        return None, None
+
+# Apply (⚠️ slow, do once and save)
+members_f["lat"], members_f["lon"] = zip(*members_f["Address"].apply(get_lat_lon))
+
 
 
 # ----------------------------
@@ -137,6 +153,8 @@ members = members.rename(columns={
     "Cellphone?": "Cellphone"
 })
 
+members_f["lat"] = members_f["Latitude"]
+members_f["lon"] = members_f["Longitude"]
 # ----------------------------
 # ENSURE EXPECTED COLUMNS
 # ----------------------------
