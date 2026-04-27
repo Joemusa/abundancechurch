@@ -8,31 +8,7 @@ from google.oauth2.service_account import Credentials
 
 import pydeck as pdk
 
-with tab_map:
-    st.subheader("🗺️ Member Locations")
 
-    df = members_f.dropna(subset=["lat", "lon"])
-
-    layer = pdk.Layer(
-        "ScatterplotLayer",
-        data=df,
-        get_position='[lon, lat]',
-        get_radius=100,
-        get_fill_color=[255, 0, 0],
-        pickable=True
-    )
-
-    view_state = pdk.ViewState(
-        latitude=df["lat"].mean(),
-        longitude=df["lon"].mean(),
-        zoom=10
-    )
-
-    st.pydeck_chart(pdk.Deck(
-        layers=[layer],
-        initial_view_state=view_state,
-        tooltip={"text": "{First Name} {Surname}"}
-    ))
 
 # ----------------------------
 # CONFIG
@@ -315,7 +291,7 @@ def clean_chart(fig):
 # ----------------------------
 # TABS
 # ----------------------------
-tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs([
+tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9 = st.tabs([
     "📊 Demographics",
     "📈 Growth",
     "👥 Total Members",
@@ -324,6 +300,7 @@ tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs([
     "🚫 Not Attending",
     "💰 Tithing Members",
     "📩 Bulk SMS"
+    "🗺️ Map"
 ])
 
 # ============================
@@ -397,55 +374,32 @@ with tab1:
             st.info("No data available")
         st.markdown('</div>', unsafe_allow_html=True)
 
-    # c4, c5, c6, c7 = st.columns(4)
 
-    #with c4:
-        #st.markdown('<div class="chart-card">', unsafe_allow_html=True)
-        #prov = members_f["Province"].value_counts().reset_index()
-        #prov.columns = ["Province", "Count"]
-        #if not prov.empty:
-         #   fig = px.bar(prov, x="Province", y="Count", text="Count")
-          #  fig.update_traces(textposition="outside")
-           # st.plotly_chart(clean_chart(fig), use_container_width=True)
-        #else:
-         #   st.info("No data available")
-        #st.markdown('</div>', unsafe_allow_html=True)
-
-    #with c5:
-     #   st.markdown('<div class="chart-card">', unsafe_allow_html=True)
-      #  serv = attendance_f["Service"].value_counts().reset_index()
-       # serv.columns = ["Service", "Count"]
-        #if not serv.empty:
-         #   fig = px.bar(serv, x="Service", y="Count", text="Count")
-          #  fig.update_traces(textposition="outside")
-           # st.plotly_chart(clean_chart(fig), use_container_width=True)
-        #else:
-         #   st.info("No data available")
-       # st.markdown('</div>', unsafe_allow_html=True)
-
-    #with c6:
-     #   st.markdown('<div class="chart-card">', unsafe_allow_html=True)
-      #  reg = members_f["Region"].value_counts().reset_index()
-       # reg.columns = ["Region", "Count"]
-        #if not reg.empty:
-         #   fig = px.bar(reg, x="Region", y="Count", text="Count")
-          #  fig.update_traces(textposition="outside")
-           # st.plotly_chart(clean_chart(fig), use_container_width=True)
-        #else:
-         #   st.info("No data available")
-        #st.markdown('</div>', unsafe_allow_html=True)
-
-    #with c7:
-     #   st.markdown('<div class="chart-card">', unsafe_allow_html=True)
-      #  br = members_f["Branch"].value_counts().reset_index()
-       # br.columns = ["Branch", "Count"]
-        #if not br.empty:
-         #   fig = px.bar(br, x="Branch", y="Count", text="Count")
-          #  fig.update_traces(textposition="outside")
-           # st.plotly_chart(clean_chart(fig), use_container_width=True)
-        #else:
-         #   st.info("No data available")
-        #st.markdown('</div>', unsafe_allow_html=True)
+    with tab_map:
+        st.subheader("🗺️ Member Locations")
+    
+        df = members_f.dropna(subset=["lat", "lon"])
+    
+        layer = pdk.Layer(
+            "ScatterplotLayer",
+            data=df,
+            get_position='[lon, lat]',
+            get_radius=100,
+            get_fill_color=[255, 0, 0],
+            pickable=True
+        )
+    
+        view_state = pdk.ViewState(
+            latitude=df["lat"].mean(),
+            longitude=df["lon"].mean(),
+            zoom=10
+        )
+    
+        st.pydeck_chart(pdk.Deck(
+            layers=[layer],
+            initial_view_state=view_state,
+            tooltip={"text": "{First Name} {Surname}"}
+        ))
 
 # ============================
 # GROWTH
