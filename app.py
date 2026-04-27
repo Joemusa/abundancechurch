@@ -380,6 +380,7 @@ with tab1:
 # ============================
 # GROWTH
 # ============================
+
 with tab2:
     k1 = st.columns(1)
     with k1:
@@ -536,30 +537,26 @@ with tab8:
 # MAP
 # ----------------------------
 with tab9:
-        st.subheader("🗺️ Member Locations")
-    
-        df = members_f.dropna(subset=["lat", "lon"])
-    
-        layer = pdk.Layer(
-            "ScatterplotLayer",
-            data=df,
-            get_position='[lon, lat]',
-            get_radius=100,
-            get_fill_color=[255, 0, 0],
-            pickable=True
-        )
-    
-        view_state = pdk.ViewState(
-            latitude=df["lat"].mean(),
-            longitude=df["lon"].mean(),
-            zoom=10
-        )
-    
-        st.pydeck_chart(pdk.Deck(
-            layers=[layer],
-            initial_view_state=view_state,
-            tooltip={"text": "{First Name} {Surname}"}
-        ))
+    st.subheader("🗺️ Member Locations")
+    df = members_f.dropna(subset=["lat", "lon"])
+    layer = pdk.Layer(
+        "ScatterplotLayer",
+        data=df,
+        get_position='[lon, lat]',
+        get_radius=100,
+        get_fill_color=[255, 0, 0],
+        pickable=True
+    )
+    view_state = pdk.ViewState
+    latitude=df["lat"].mean(),
+    longitude=df["lon"].mean(),
+    zoom=10
+    )
+    st.pydeck_chart(pdk.Deck(
+        layers=[layer],
+        initial_view_state=view_state,
+        tooltip={"text": "{First Name} {Surname}"}
+    ))
 
 
 # ----------------------------
