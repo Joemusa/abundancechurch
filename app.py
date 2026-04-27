@@ -22,7 +22,7 @@ def get_lat_lon(address):
         return None, None
 
 # Apply (⚠️ slow, do once and save)
-members_f["lat"], members_f["lon"] = zip(*members_f["Address"].apply(get_lat_lon))
+#members_f["lat"], members_f["lon"] = zip(*members_f["Address"].apply(get_lat_lon))
 
 
 
