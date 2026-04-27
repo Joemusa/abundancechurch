@@ -299,7 +299,7 @@ tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9 = st.tabs([
     "🆕 New Visitors",
     "🚫 Not Attending",
     "💰 Tithing Members",
-    "📩 Bulk SMS"
+    "📩 Bulk SMS",
     "🗺️ Map"
 ])
 
@@ -375,31 +375,7 @@ with tab1:
         st.markdown('</div>', unsafe_allow_html=True)
 
 
-    with tab9:
-        st.subheader("🗺️ Member Locations")
     
-        df = members_f.dropna(subset=["lat", "lon"])
-    
-        layer = pdk.Layer(
-            "ScatterplotLayer",
-            data=df,
-            get_position='[lon, lat]',
-            get_radius=100,
-            get_fill_color=[255, 0, 0],
-            pickable=True
-        )
-    
-        view_state = pdk.ViewState(
-            latitude=df["lat"].mean(),
-            longitude=df["lon"].mean(),
-            zoom=10
-        )
-    
-        st.pydeck_chart(pdk.Deck(
-            layers=[layer],
-            initial_view_state=view_state,
-            tooltip={"text": "{First Name} {Surname}"}
-        ))
 
 # ============================
 # GROWTH
@@ -555,6 +531,37 @@ with tab8:
 
             except Exception as e:
                 st.error(f"Error {number}: {e}")
+
+#-----------------------------
+# MAP
+# ----------------------------
+with tab9:
+        st.subheader("🗺️ Member Locations")
+    
+        df = members_f.dropna(subset=["lat", "lon"])
+    
+        layer = pdk.Layer(
+            "ScatterplotLayer",
+            data=df,
+            get_position='[lon, lat]',
+            get_radius=100,
+            get_fill_color=[255, 0, 0],
+            pickable=True
+        )
+    
+        view_state = pdk.ViewState(
+            latitude=df["lat"].mean(),
+            longitude=df["lon"].mean(),
+            zoom=10
+        )
+    
+        st.pydeck_chart(pdk.Deck(
+            layers=[layer],
+            initial_view_state=view_state,
+            tooltip={"text": "{First Name} {Surname}"}
+        ))
+
+
 # ----------------------------
 # LOGOUT
 # ----------------------------
