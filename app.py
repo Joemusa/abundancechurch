@@ -554,6 +554,8 @@ with tab8:
 #-----------------------------
 # MAP
 # ----------------------------
+members["lat"] = pd.to_numeric(members["lat"], errors="coerce")
+members["lon"] = pd.to_numeric(members["lon"], errors="coerce")
 with tab9:
     st.subheader("🗺️ Member Locations")
 
