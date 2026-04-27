@@ -400,7 +400,8 @@ with tab1:
 # ============================
 
 with tab2:
-    k1 = st.columns(1)
+    k1, = st.columns(1)
+    
     with k1:
         daily_target = 500
 
