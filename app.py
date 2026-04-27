@@ -414,8 +414,7 @@ with tab2:
 
         show_kpi(
             "Growth Rate",
-            f"{growth_rate:.1f}%",
-            f"+{growth} today | Target: {daily_target}"
+            f"{growth_rate:.1f}%"
         )
 
         st.caption(f"Progress: {progress:.1f}%")
