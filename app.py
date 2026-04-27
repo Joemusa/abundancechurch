@@ -153,7 +153,7 @@ members = members.rename(columns={
     "Cellphone?": "Cellphone"
 })
 
-members_["lat"] = members["Latitude"]
+members_f["lat"] = members["Latitude"]
 members_f["lon"] = members["Longitude"]
 # ----------------------------
 # ENSURE EXPECTED COLUMNS
