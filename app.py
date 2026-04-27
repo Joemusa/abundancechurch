@@ -375,7 +375,7 @@ with tab1:
         st.markdown('</div>', unsafe_allow_html=True)
 
 
-    with tab_map:
+    with tab9:
         st.subheader("🗺️ Member Locations")
     
         df = members_f.dropna(subset=["lat", "lon"])
