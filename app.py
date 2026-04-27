@@ -557,7 +557,10 @@ with tab8:
 with tab9:
     st.subheader("🗺️ Member Locations")
 
-    # ✅ Convert to numeric
+    # 🔥 CLEAN DATA PROPERLY
+    members["lat"] = members["lat"].astype(str).str.strip()
+    members["lon"] = members["lon"].astype(str).str.strip()
+
     members["lat"] = pd.to_numeric(members["lat"], errors="coerce")
     members["lon"] = pd.to_numeric(members["lon"], errors="coerce")
 
@@ -586,7 +589,6 @@ with tab9:
         ))
     else:
         st.warning("⚠️ No valid location data available")
-
 
 # ----------------------------
 # LOGOUT
