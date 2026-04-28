@@ -138,7 +138,11 @@ members = members.rename(columns={
 
 import random
 
-# ✅ AREA MAPPING
+# ============================
+# LOCATION MAPPING
+# ============================
+
+# Area-based locations (from Address column)
 area_locations = {
     "Soweto": (-26.2678, 27.8585),
     "Johannesburg CBD": (-26.2041, 28.0473),
@@ -147,23 +151,45 @@ area_locations = {
     "Meadowlands": (-26.2708, 27.8770)
 }
 
-# ✅ GENERATE LOCATION FUNCTION
-def generate_location(address):
+# Leader fallback locations
+leader_locations = {
+    "George": (-26.2678, 27.8585),
+    "Zodwa": (-26.2041, 28.0473),
+    "Fabion": (-26.1450, 28.0425),
+    "John": (-26.1000, 28.0600),
+    "Joseph": (-26.2708, 27.8770)
+}
+
+# ============================
+# GENERATE LOCATION FUNCTION
+# ============================
+
+def generate_location(row):
+    address = str(row["Address"]).strip()
+    leader = str(row["Zone Leader"]).strip()
+
+    # 1️⃣ Try address first
     base = area_locations.get(address)
 
+    # 2️⃣ Fallback to leader
+    if not base:
+        base = leader_locations.get(leader)
+
+    # 3️⃣ If found → add small variation
     if base:
         lat, lon = base
-        
-        # realistic spread
         lat += random.uniform(-0.005, 0.005)
         lon += random.uniform(-0.005, 0.005)
-
         return lat, lon
 
+    # 4️⃣ Last fallback (optional)
     return None, None
 
-# ✅ APPLY TO DATA
-members["lat"], members["lon"] = zip(*members["Address"].apply(generate_location))
+# ============================
+# APPLY TO DATA
+# ============================
+
+members_f["lat"], members_f["lon"] = zip(*members_f.apply(generate_location, axis=1))
 # ----------------------------
 # ENSURE EXPECTED COLUMNS
 # ----------------------------
