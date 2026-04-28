@@ -621,6 +621,32 @@ for leader, color in color_map.items():
 with tab9:
     st.subheader("🗺️ Member Locations")
 
+# ============================
+# LEGEND ABOVE MAP (ROW STYLE)
+# ============================
+
+st.markdown("### 🎨 Leader Legend")
+
+    # Create columns dynamically based on number of leaders
+    cols = st.columns(len(color_map))
+    
+    for i, (leader, color) in enumerate(color_map.items()):
+        with cols[i]:
+            st.markdown(
+                f"""
+                <div style="display:flex; align-items:center; gap:6px;">
+                    <div style="
+                        width:12px;
+                        height:12px;
+                        background-color:rgb({color[0]},{color[1]},{color[2]});
+                        border-radius:50%;
+                    "></div>
+                    <span style="color:white; font-size:14px;">{leader}</span>
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+
     # 🔥 CLEAN DATA PROPERLY
     members["lat"] = members["lat"].astype(str).str.strip()
     members["lon"] = members["lon"].astype(str).str.strip()
