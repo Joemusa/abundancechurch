@@ -190,6 +190,26 @@ def generate_location(row):
 # ============================
 
 members["lat"], members["lon"] = zip(*members.apply(generate_location, axis=1))
+
+# ============================
+# COLOR BY LEADER
+# ============================
+
+color_map = {
+    "George": [255, 0, 0],     # Red
+    "Zodwa": [0, 255, 0],      # Green
+    "Fabion": [0, 0, 255],     # Blue
+    "John": [255, 165, 0],     # Orange
+    "Joseph": [128, 0, 128]    # Purple
+}
+
+# Assign color to each member
+members["color"] = members["Zone Leader"].map(color_map)
+
+# Fallback color (for unknown leaders)
+members["color"] = members["color"].apply(
+    lambda x: x if isinstance(x, list) else [200, 200, 200]
+)
 # ----------------------------
 # ENSURE EXPECTED COLUMNS
 # ----------------------------
