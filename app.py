@@ -609,6 +609,15 @@ with tab8:
 #-----------------------------
 # MAP
 # ----------------------------
+st.markdown("### 🎨 Leader Legend")
+
+for leader, color in color_map.items():
+    st.markdown(
+        f"<span style='color:rgb({color[0]},{color[1]},{color[2]})'>●</span> {leader}",
+        unsafe_allow_html=True
+    )
+
+
 with tab9:
     st.subheader("🗺️ Member Locations")
 
@@ -619,7 +628,7 @@ with tab9:
     members["lat"] = pd.to_numeric(members["lat"], errors="coerce")
     members["lon"] = pd.to_numeric(members["lon"], errors="coerce")
 
-    df = members_f.dropna(subset=["lat", "lon"])
+    df = members.dropna(subset=["lat", "lon"])
 
     if not df.empty:
         layer = pdk.Layer(
