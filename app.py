@@ -8,23 +8,6 @@ from google.oauth2.service_account import Credentials
 
 import pydeck as pdk
 
-from geopy.geocoders import Nominatim
-import time
-
-geolocator = Nominatim(user_agent="church_app")
-
-def get_lat_lon(address):
-    try:
-        location = geolocator.geocode(address)
-        if location:
-            return location.latitude, location.longitude
-    except:
-        return None, None
-
-# Apply (⚠️ slow, do once and save)
-#members_f["lat"], members_f["lon"] = zip(*members_f["Address"].apply(get_lat_lon))
-
-
 
 # ----------------------------
 # CONFIG
@@ -153,8 +136,27 @@ members = members.rename(columns={
     "Cellphone?": "Cellphone"
 })
 
-members["lat"] = members["Latitude"]
-members["lon"] = members["Longitude"]
+import random
+
+leader_locations = {
+    "George": (-26.2678, 27.8585),
+    "Zodwa": (-26.2041, 28.0473),
+    "Fabion": (-26.1450, 28.0425),
+    "John": (-26.1000, 28.0600),
+    "Joseph": (-26.2708, 27.8770)
+}
+
+def generate_location(leader):
+    base = leader_locations.get(leader)
+    if base:
+        lat, lon = base
+        lat += random.uniform(-0.01, 0.01)
+        lon += random.uniform(-0.01, 0.01)
+        return lat, lon
+    return None, None
+
+# 🔥 ADD COLUMNS HERE
+members["lat"], members["lon"] = zip(*members["Zone Leader"].apply(generate_location))
 # ----------------------------
 # ENSURE EXPECTED COLUMNS
 # ----------------------------
