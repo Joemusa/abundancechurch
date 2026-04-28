@@ -138,25 +138,32 @@ members = members.rename(columns={
 
 import random
 
-leader_locations = {
-    "George": (-26.2678, 27.8585),
-    "Zodwa": (-26.2041, 28.0473),
-    "Fabion": (-26.1450, 28.0425),
-    "John": (-26.1000, 28.0600),
-    "Joseph": (-26.2708, 27.8770)
+# ✅ AREA MAPPING
+area_locations = {
+    "Soweto": (-26.2678, 27.8585),
+    "Johannesburg CBD": (-26.2041, 28.0473),
+    "Midrand": (-26.1000, 28.0600),
+    "Sandton": (-26.1450, 28.0425),
+    "Meadowlands": (-26.2708, 27.8770)
 }
 
-def generate_location(leader):
-    base = leader_locations.get(leader)
+# ✅ GENERATE LOCATION FUNCTION
+def generate_location(address):
+    base = area_locations.get(address)
+
     if base:
         lat, lon = base
-        lat += random.uniform(-0.01, 0.01)
-        lon += random.uniform(-0.01, 0.01)
+        
+        # realistic spread
+        lat += random.uniform(-0.005, 0.005)
+        lon += random.uniform(-0.005, 0.005)
+
         return lat, lon
+
     return None, None
 
-# 🔥 ADD COLUMNS HERE
-members["lat"], members["lon"] = zip(*members["Zone Leader"].apply(generate_location))
+# ✅ APPLY TO DATA
+members["lat"], members["lon"] = zip(*members["Address"].apply(generate_location))
 # ----------------------------
 # ENSURE EXPECTED COLUMNS
 # ----------------------------
