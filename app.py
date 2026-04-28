@@ -552,9 +552,9 @@ with tab7:
         "tithing_members.csv"
     )
 
-" =========================
-" BULK SMS
-" =========================
+# =========================
+# BULK SMS
+# =========================
 
 with tab8:
     st.subheader("📩 Send Bulk SMS (BulkSMS)")
