@@ -189,7 +189,7 @@ def generate_location(row):
 # APPLY TO DATA
 # ============================
 
-members_f["lat"], members_f["lon"] = zip(*members_f.apply(generate_location, axis=1))
+members["lat"], members["lon"] = zip(*members.apply(generate_location, axis=1))
 # ----------------------------
 # ENSURE EXPECTED COLUMNS
 # ----------------------------
