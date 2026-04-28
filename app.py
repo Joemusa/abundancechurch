@@ -627,7 +627,7 @@ with tab9:
             data=df,
             get_position='[lon, lat]',
             get_radius=100,
-            get_fill_color=[255, 0, 0],
+            get_fill_color="color",
             pickable=True
         )
 
