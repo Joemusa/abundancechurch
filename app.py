@@ -611,7 +611,7 @@ with tab8:
 # ----------------------------
 
 with tab9:
-    st.subheader("🗺️ Member Locations")
+#st.subheader("🗺️ Member Locations")
 
 # ============================
 # LEGEND ABOVE MAP (ROW STYLE)
