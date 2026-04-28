@@ -552,9 +552,9 @@ with tab7:
         "tithing_members.csv"
     )
 
-"========================="
-"BULK SMS"
-"========================="
+"=========================
+"BULK SMS
+"=========================
 
 with tab8:
     st.subheader("📩 Send Bulk SMS (BulkSMS)")
@@ -609,14 +609,6 @@ with tab8:
 #-----------------------------
 # MAP
 # ----------------------------
-st.markdown("### 🎨 Leader Legend")
-
-for leader, color in color_map.items():
-    st.markdown(
-        f"<span style='color:rgb({color[0]},{color[1]},{color[2]})'>●</span> {leader}",
-        unsafe_allow_html=True
-    )
-
 
 with tab9:
     st.subheader("🗺️ Member Locations")
