@@ -14,6 +14,12 @@ import pydeck as pdk
 # ----------------------------
 st.set_page_config(page_title="Church Executive Dashboard", layout="wide")
 
+from PIL import Image
+import streamlit as st
+
+image = Image.open("abundance_logo.png")
+st.image(image, width=250)
+
 # ----------------------------
 # CUSTOM STYLING
 # ----------------------------
