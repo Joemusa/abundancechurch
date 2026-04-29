@@ -17,7 +17,7 @@ st.set_page_config(page_title="Church Executive Dashboard", layout="wide")
 from PIL import Image
 import streamlit as st
 
-image = Image.open("https://github.com/Joemusa/abundancechurch/blob/main/ABUNDANCE-CHURCH-LOGO-WHT-200x47.png")
+image = Image.open("ABUNDANCE-CHURCH-LOGO-WHT-200x47.png")
 st.image(image, width=250)
 
 # ----------------------------
