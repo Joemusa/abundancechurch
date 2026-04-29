@@ -14,11 +14,7 @@ import pydeck as pdk
 # ----------------------------
 st.set_page_config(page_title="Church Executive Dashboard", layout="wide")
 
-from PIL import Image
-import streamlit as st
 
-image = Image.open("ABUNDANCE-CHURCH-LOGO-WHT-200x47.png")
-st.image(image, width=250)
 
 # ----------------------------
 # CUSTOM STYLING
@@ -78,6 +74,13 @@ st.markdown("""
 # ----------------------------
 # SIMPLE LOGIN
 # ----------------------------
+
+from PIL import Image
+import streamlit as st
+
+image = Image.open("ABUNDANCE-CHURCH-LOGO-WHT-200x47.png")
+st.image(image, width=250)
+
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
 
