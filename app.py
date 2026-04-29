@@ -66,6 +66,9 @@ st.markdown("""
 # ----------------------------
 # SIMPLE LOGIN
 # ----------------------------
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
+
 if not st.session_state.logged_in:
     from PIL import Image
     import streamlit as st
@@ -73,8 +76,7 @@ if not st.session_state.logged_in:
     image = Image.open("ABUNDANCE-CHURCH-LOGO-WHT-200x47.png")
     st.image(image, width=250)
         
-    if "logged_in" not in st.session_state:
-        st.session_state.logged_in = False
+ 
     
     APP_USERNAME = st.secrets.get("dashboard_username", "admin")
     APP_PASSWORD = st.secrets.get("dashboard_password", "admin")
