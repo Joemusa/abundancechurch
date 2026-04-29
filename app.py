@@ -66,36 +66,44 @@ st.markdown("""
 # ----------------------------
 # SIMPLE LOGIN
 # ----------------------------
-
-from PIL import Image
-import streamlit as st
-
-image = Image.open("ABUNDANCE-CHURCH-LOGO-WHT-200x47.png")
-st.image(image, width=250)
-
-if "logged_in" not in st.session_state:
-    st.session_state.logged_in = False
-
-APP_USERNAME = st.secrets.get("dashboard_username", "admin")
-APP_PASSWORD = st.secrets.get("dashboard_password", "admin")
-
 if not st.session_state.logged_in:
-    st.markdown('<div class="login-card">', unsafe_allow_html=True)
-    st.markdown("<div class='main-title'>🔐 Login</div>", unsafe_allow_html=True)
-    st.markdown("<div class='sub-title'>Church Executive Dashboard</div>", unsafe_allow_html=True)
-
-    username = st.text_input("Username")
-    password = st.text_input("Password", type="password")
-
-    if st.button("Login", use_container_width=True):
-        if username == APP_USERNAME and password == APP_PASSWORD:
-            st.session_state.logged_in = True
-            st.rerun()
-        else:
-            st.error("Incorrect username or password")
-
-    st.markdown("</div>", unsafe_allow_html=True)
-    st.stop()
+    from PIL import Image
+    import streamlit as st
+    
+    image = Image.open("ABUNDANCE-CHURCH-LOGO-WHT-200x47.png")
+    st.image(image, width=250)
+    st.markdown(
+        """
+        <div style='text-align: center; margin-bottom: 20px;'>
+            <img src="ABUNDANCE-CHURCH-LOGO-WHT-200x47.png" width="250">
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+    
+    if "logged_in" not in st.session_state:
+        st.session_state.logged_in = False
+    
+    APP_USERNAME = st.secrets.get("dashboard_username", "admin")
+    APP_PASSWORD = st.secrets.get("dashboard_password", "admin")
+    
+    if not st.session_state.logged_in:
+        st.markdown('<div class="login-card">', unsafe_allow_html=True)
+        st.markdown("<div class='main-title'>🔐 Login</div>", unsafe_allow_html=True)
+        st.markdown("<div class='sub-title'>Church Executive Dashboard</div>", unsafe_allow_html=True)
+    
+        username = st.text_input("Username")
+        password = st.text_input("Password", type="password")
+    
+        if st.button("Login", use_container_width=True):
+            if username == APP_USERNAME and password == APP_PASSWORD:
+                st.session_state.logged_in = True
+                st.rerun()
+            else:
+                st.error("Incorrect username or password")
+    
+        st.markdown("</div>", unsafe_allow_html=True)
+        st.stop()
 
 # ----------------------------
 # CONNECT
