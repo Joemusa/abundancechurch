@@ -25,7 +25,7 @@ st.markdown("""
         font-size: 28px;
         font-weight: 700;
         margin-bottom: 0.25rem;
-        color: transparent;
+        color: white;
     }
     .sub-title {
         color: #666666;
@@ -65,7 +65,7 @@ st.markdown("""
         border: 1px solid #d9d9d9;
         border-radius: 18px;
         padding: 28px;
-        background: white;
+        background: transparent;
         box-shadow: 0 4px 18px rgba(0,0,0,0.08);
     }
 </style>
