@@ -72,15 +72,7 @@ if not st.session_state.logged_in:
     
     image = Image.open("ABUNDANCE-CHURCH-LOGO-WHT-200x47.png")
     st.image(image, width=250)
-    st.markdown(
-        """
-        <div style='text-align: center; margin-bottom: 20px;'>
-            <img src="ABUNDANCE-CHURCH-LOGO-WHT-200x47.png" width="250">
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-    
+        
     if "logged_in" not in st.session_state:
         st.session_state.logged_in = False
     
