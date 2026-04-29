@@ -59,15 +59,7 @@ st.markdown("""
         box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         margin-bottom: 14px;
     }
-    .login-card {
-        max-width: 420px;
-        margin: 60px auto;
-        border: 1px solid #d9d9d9;
-        border-radius: 18px;
-        padding: 28px;
-        background: transparent;
-        box-shadow: 0 4px 18px rgba(0,0,0,0.08);
-    }
+    
 </style>
 """, unsafe_allow_html=True)
 
