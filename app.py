@@ -141,7 +141,7 @@ members = members.rename(columns={
 #----------------------------
 #CONTINUE APP (tabs etc.)
 #----------------------------
-tab1, tab2, tab3...
+#tab1, tab2, tab3...
 import random
 
 #============================
