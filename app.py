@@ -466,20 +466,27 @@ with tab2:
 # ----------------------------
 # ATTENDANCE PER WEEK
 # ----------------------------
-attendance["Date"] = pd.to_datetime(attendance["Date"], errors="coerce")
+# ----------------------------
+# ATTENDANCE PER DAY
+# ----------------------------
+attendance["Date"] = pd.to_datetime(attendance_f["Date"], errors="coerce")
 
-attendance["Day"] = attendance["Date"].dt.date
+attendance["Day"] = attendance_f["Date"].dt.date
 
-attendance_day = attendance.groupby("Day")["MemberID"].nunique().reset_index().sort_values("Day")
-attendance_day.columns = ["WDay", "Attending Members"]
+attendance_day = (
+    attendance.groupby("Day")["MemberID"]
+    .nunique()
+    .reset_index()
+    .sort_values("Day")
+)
 
 st.markdown("### 📊 Attendance Per Day")
 
 fig_bar = px.bar(
     attendance_day,
     x="Day",
-    y="MembersID",
-    text="Attending Members"
+    y="MemberID",   # ✅ use real column name
+    text="MemberID"
 )
 
 fig_bar.update_traces(textposition="outside")
