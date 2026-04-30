@@ -477,8 +477,8 @@ st.markdown("### 📊 Attendance Per Day")
 
 fig_bar = px.bar(
     attendance_day,
-    x="Date",
-    y="Attending Members",
+    x="Day",
+    y="MembersID",
     text="Attending Members"
 )
 
