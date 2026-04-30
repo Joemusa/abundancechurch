@@ -677,6 +677,6 @@ with tab9:
 # ----------------------------
 # LOGOUT
 # ----------------------------
-if st.sidebar.button("Logout"):
-    st.session_state.logged_in = False
-    st.rerun()
+    if st.sidebar.button("Logout"):
+        st.session_state.logged_in = False
+        st.rerun()
