@@ -137,6 +137,44 @@ members = members.rename(columns={
     "Cellphone?": "Cellphone"
 })
 
+# ----------------------------
+# LOAD DATA (Google Sheets)
+# ----------------------------
+members = load_data()   # your existing code
+
+# ----------------------------
+# ✅ ADD GEOCODING HERE
+# ----------------------------
+from geopy.geocoders import Nominatim
+from time import sleep
+
+geolocator = Nominatim(user_agent="church_app")
+
+def geocode_address(address):
+    try:
+        location = geolocator.geocode(address)
+        if location:
+            return location.latitude, location.longitude
+    except:
+        return None, None
+
+# Create columns if missing
+if "lat" not in members.columns:
+    members["lat"] = None
+    members["lon"] = None
+
+# Fill missing coordinates
+for i, row in members.iterrows():
+    if pd.isna(row["lat"]) or pd.isna(row["lon"]):
+        lat, lon = geocode_address(row["Address"])
+        members.at[i, "lat"] = lat
+        members.at[i, "lon"] = lon
+        sleep(1)
+
+# ----------------------------
+# CONTINUE APP (tabs etc.)
+# ----------------------------
+tab1, tab2, tab3...
 #import random
 
 # ============================
