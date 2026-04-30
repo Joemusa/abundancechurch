@@ -614,66 +614,83 @@ with tab8:
 # ----------------------------
 
 with tab9:
-#st.subheader("🗺️ Member Locations")
 
-# ============================
-# LEGEND ABOVE MAP (ROW STYLE)
-# ============================
+    st.subheader("🗺️ Member Locations")
 
-    # st.markdown("### 🎨 Leader Legend")
-    
-    # # Create columns dynamically based on number of leaders
-    # cols = st.columns(len(color_map))
-    # for i, (leader, color) in enumerate(color_map.items()):
-    #     with cols[i]:
-    #         st.markdown(
-    #             f"""
-    #             <div style="display:flex; align-items:center; gap:6px;">
-    #             <div style="
-    #             width:12px;
-    #             height:12px;
-    #             background-color:rgb({color[0]},{color[1]},{color[2]});
-    #             border-radius:50%;
-    #             "></div>
-    #             <span style="color:white; font-size:14px;">{leader}</span>
-    #             </div>
-    #             """,
-    #             unsafe_allow_html=True
-    #         )
+    # ----------------------------
+    # COLOR MAP (AUTO OR FIXED)
+    # ----------------------------
+    unique_leaders = members["Zone Leader"].dropna().unique()
 
-    # # 🔥 CLEAN DATA PROPERLY
-    # members["lat"] = members["lat"].astype(str).str.strip()
-    # members["lon"] = members["lon"].astype(str).str.strip()
+    import random
+    color_map = {
+        leader: [random.randint(50,255), random.randint(50,255), random.randint(50,255)]
+        for leader in unique_leaders
+    }
 
-    # members["lat"] = pd.to_numeric(members["lat"], errors="coerce")
-    # members["lon"] = pd.to_numeric(members["lon"], errors="coerce")
+    # ----------------------------
+    # ADD COLOR COLUMN
+    # ----------------------------
+    members["color"] = members["Zone Leader"].map(color_map)
 
-    # df = members.dropna(subset=["lat", "lon"])
+    # ----------------------------
+    # CLEAN LAT/LON
+    # ----------------------------
+    members["lat"] = pd.to_numeric(members["lat"], errors="coerce")
+    members["lon"] = pd.to_numeric(members["lon"], errors="coerce")
 
-    # if not df.empty:
-    #     layer = pdk.Layer(
-    #         "ScatterplotLayer",
-    #         data=df,
-    #         get_position='[lon, lat]',
-    #         get_radius=100,
-    #         get_fill_color="color",
-    #         pickable=True
-    #     )
+    df = members.dropna(subset=["lat", "lon"])
 
-    #     view_state = pdk.ViewState(
-    #         latitude=df["lat"].mean(),
-    #         longitude=df["lon"].mean(),
-    #         zoom=10
-    #     )
+    # ----------------------------
+    # LEGEND (ROW STYLE)
+    # ----------------------------
+    cols = st.columns(len(color_map))
 
-    #     st.pydeck_chart(pdk.Deck(
-    #         layers=[layer],
-    #         initial_view_state=view_state,
-    #         tooltip={"text": "{First Name} {Surname}"}
-    #     ))
-    # else:
-    #     st.warning("⚠️ No valid location data available")
+    for i, (leader, color) in enumerate(color_map.items()):
+        with cols[i]:
+            st.markdown(
+                f"""
+                <div style="display:flex; align-items:center; gap:6px;">
+                <div style="
+                width:12px;
+                height:12px;
+                background-color:rgb({color[0]},{color[1]},{color[2]});
+                border-radius:50%;
+                "></div>
+                <span style="color:white; font-size:14px;">{leader}</span>
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
 
+    # ----------------------------
+    # MAP
+    # ----------------------------
+    if not df.empty:
+
+        layer = pdk.Layer(
+            "ScatterplotLayer",
+            data=df,
+            get_position='[lon, lat]',
+            get_radius=120,
+            get_fill_color="color",
+            pickable=True
+        )
+
+        view_state = pdk.ViewState(
+            latitude=float(df["lat"].mean()),
+            longitude=float(df["lon"].mean()),
+            zoom=10
+        )
+
+        st.pydeck_chart(pdk.Deck(
+            layers=[layer],
+            initial_view_state=view_state,
+            tooltip={"text": "{First Name} {Surname}"}
+        ))
+
+    else:
+        st.warning("⚠️ No valid location data available")
 # ----------------------------
 # LOGOUT
 # ----------------------------
