@@ -462,6 +462,29 @@ with tab2:
 
     with k3:
         show_kpi("Growth Rate", f"{growth_rate:.1f}% (+{growth})")
+
+# ----------------------------
+# ATTENDANCE PER WEEK
+# ----------------------------
+attendance_f["Timestamp"] = pd.to_datetime(attendance_f["Timestamp"], errors="coerce")
+
+attendance_f["Week"] = attendance_f["Timestamp"].dt.to_period("W").astype(str)
+
+attendance_week = attendance_f.groupby("Week")["MemberID"].nunique().reset_index()
+attendance_week.columns = ["Week", "Attending Members"]
+
+st.markdown("### 📊 Attendance Per Week")
+
+fig_bar = px.bar(
+    attendance_week,
+    x="Week",
+    y="Attending Members",
+    text="Attending Members"
+)
+
+fig_bar.update_traces(textposition="outside")
+
+st.plotly_chart(fig_bar, use_container_width=True)
    
  
 # ============================
