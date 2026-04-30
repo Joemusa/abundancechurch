@@ -138,15 +138,15 @@ members = members.rename(columns={
 })
 
 
-----------------------------
-CONTINUE APP (tabs etc.)
-----------------------------
+#----------------------------
+#CONTINUE APP (tabs etc.)
+#----------------------------
 tab1, tab2, tab3...
 import random
 
-============================
-LOCATION MAPPING
-============================
+#============================
+#LOCATION MAPPING
+#============================
 
 # Area-based locations (from Address column)
 area_locations = {
