@@ -620,59 +620,59 @@ with tab9:
 # LEGEND ABOVE MAP (ROW STYLE)
 # ============================
 
-    st.markdown("### 🎨 Leader Legend")
+    # st.markdown("### 🎨 Leader Legend")
     
-    # Create columns dynamically based on number of leaders
-    cols = st.columns(len(color_map))
-    for i, (leader, color) in enumerate(color_map.items()):
-        with cols[i]:
-            st.markdown(
-                f"""
-                <div style="display:flex; align-items:center; gap:6px;">
-                <div style="
-                width:12px;
-                height:12px;
-                background-color:rgb({color[0]},{color[1]},{color[2]});
-                border-radius:50%;
-                "></div>
-                <span style="color:white; font-size:14px;">{leader}</span>
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
+    # # Create columns dynamically based on number of leaders
+    # cols = st.columns(len(color_map))
+    # for i, (leader, color) in enumerate(color_map.items()):
+    #     with cols[i]:
+    #         st.markdown(
+    #             f"""
+    #             <div style="display:flex; align-items:center; gap:6px;">
+    #             <div style="
+    #             width:12px;
+    #             height:12px;
+    #             background-color:rgb({color[0]},{color[1]},{color[2]});
+    #             border-radius:50%;
+    #             "></div>
+    #             <span style="color:white; font-size:14px;">{leader}</span>
+    #             </div>
+    #             """,
+    #             unsafe_allow_html=True
+    #         )
 
-    # 🔥 CLEAN DATA PROPERLY
-    members["lat"] = members["lat"].astype(str).str.strip()
-    members["lon"] = members["lon"].astype(str).str.strip()
+    # # 🔥 CLEAN DATA PROPERLY
+    # members["lat"] = members["lat"].astype(str).str.strip()
+    # members["lon"] = members["lon"].astype(str).str.strip()
 
-    members["lat"] = pd.to_numeric(members["lat"], errors="coerce")
-    members["lon"] = pd.to_numeric(members["lon"], errors="coerce")
+    # members["lat"] = pd.to_numeric(members["lat"], errors="coerce")
+    # members["lon"] = pd.to_numeric(members["lon"], errors="coerce")
 
-    df = members.dropna(subset=["lat", "lon"])
+    # df = members.dropna(subset=["lat", "lon"])
 
-    if not df.empty:
-        layer = pdk.Layer(
-            "ScatterplotLayer",
-            data=df,
-            get_position='[lon, lat]',
-            get_radius=100,
-            get_fill_color="color",
-            pickable=True
-        )
+    # if not df.empty:
+    #     layer = pdk.Layer(
+    #         "ScatterplotLayer",
+    #         data=df,
+    #         get_position='[lon, lat]',
+    #         get_radius=100,
+    #         get_fill_color="color",
+    #         pickable=True
+    #     )
 
-        view_state = pdk.ViewState(
-            latitude=df["lat"].mean(),
-            longitude=df["lon"].mean(),
-            zoom=10
-        )
+    #     view_state = pdk.ViewState(
+    #         latitude=df["lat"].mean(),
+    #         longitude=df["lon"].mean(),
+    #         zoom=10
+    #     )
 
-        st.pydeck_chart(pdk.Deck(
-            layers=[layer],
-            initial_view_state=view_state,
-            tooltip={"text": "{First Name} {Surname}"}
-        ))
-    else:
-        st.warning("⚠️ No valid location data available")
+    #     st.pydeck_chart(pdk.Deck(
+    #         layers=[layer],
+    #         initial_view_state=view_state,
+    #         tooltip={"text": "{First Name} {Surname}"}
+    #     ))
+    # else:
+    #     st.warning("⚠️ No valid location data available")
 
 # ----------------------------
 # LOGOUT
