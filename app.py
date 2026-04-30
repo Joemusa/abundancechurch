@@ -137,7 +137,7 @@ members = members.rename(columns={
     "Cellphone?": "Cellphone"
 })
 
-import random
+#import random
 
 # ============================
 # LOCATION MAPPING
