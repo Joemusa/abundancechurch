@@ -342,35 +342,7 @@ def clean_chart(fig):
     )
     return fig
 
-# ----------------------------
-# KPI ROW
-# ----------------------------
-#k1, k2, k3, k4, k5, k6, k7, k8 = st.columns(8)
 
-#with k1:
- #   show_kpi("Total Members", members_f["MemberID"].nunique())
-
-#with k2:
- #   show_kpi("Male", len(members_f[members_f["Gender"] == "Male"]))
-
-#with k3:
- #   show_kpi("Female", len(members_f[members_f["Gender"] == "Female"]))
-
-#with k4:
- #   show_kpi("Present Members", len(attendance_f))
-
-#with k5:
-  #  show_kpi("New Visitors", len(new_visitors))
-
-#with k6:
- #   show_kpi("Absent Members", len(members_not_attending))
-
-#with k7:
- #   show_kpi("Tithing Members", len(tithing))
-
-#with k8:
-    #total_tithing = tithing["Amount"].sum()
-    #show_kpi("Tithes", f"R {total_tithing:,.0f}")
 # ----------------------------
 # TABS
 # ----------------------------
@@ -411,10 +383,6 @@ with tab1:
 
     with k7:
         show_kpi("Tithing Members", len(tithing))
-
-    #with k8:
-        #total_tithing = tithing["Amount"].sum()
-        #show_kpi("Tithes", f"R {total_tithing:,.0f}")
 
     st.markdown("<br><br>", unsafe_allow_html=True)
     c1, c2, c3 = st.columns(3)
@@ -465,25 +433,35 @@ with tab1:
 # ============================
 
 with tab2:
-    k1, = st.columns(1)
-    
+
+    k1, k2, k3 = st.columns(3)
+
+    # ----------------------------
+    # TOTAL MEMBERS
+    # ----------------------------
+    total_members = members_f["MemberID"].nunique()
+
     with k1:
-        daily_target = 500
+        show_kpi("Total Members", total_members)
 
-        current = members_f["MemberID"].nunique()
-        previous = current - 10
+    # ----------------------------
+    # ATTENDING MEMBERS
+    # ----------------------------
+    attending_members = attendance_f["MemberID"].nunique()
 
-        growth = current - previous
-        growth_rate = (growth / previous * 100) if previous > 0 else 0
-        progress = (growth / daily_target * 100) if daily_target > 0 else 0
+    with k2:
+        show_kpi("Attending Members", attending_members)
 
-        show_kpi(
-            "Growth Rate",
-            f"{growth_rate:.1f}%"
-        )
+    # ----------------------------
+    # CHURCH GROWTH RATE
+    # ----------------------------
+    previous_total = total_members - 10   # 🔁 Replace later with real previous data
 
-        st.caption(f"Progress: {progress:.1f}%")
-        st.progress(min(growth / daily_target, 1.0))
+    growth = total_members - previous_total
+    growth_rate = (growth / previous_total * 100) if previous_total > 0 else 0
+
+    with k3:
+        show_kpi("Growth Rate", f"{growth_rate:.1f}% (+{growth})")
    
  
 # ============================
