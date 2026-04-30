@@ -14,8 +14,6 @@ import pydeck as pdk
 # ----------------------------
 st.set_page_config(page_title="Church Executive Dashboard", layout="wide")
 
-
-
 # ----------------------------
 # CUSTOM STYLING
 # ----------------------------
@@ -145,23 +143,23 @@ import random
 # LOCATION MAPPING
 # ============================
 
-# Area-based locations (from Address column)
-area_locations = {
-    "Soweto": (-26.2678, 27.8585),
-    "Johannesburg CBD": (-26.2041, 28.0473),
-    "Midrand": (-26.1000, 28.0600),
-    "Sandton": (-26.1450, 28.0425),
-    "Meadowlands": (-26.2708, 27.8770)
-}
+# # Area-based locations (from Address column)
+# area_locations = {
+#     "Soweto": (-26.2678, 27.8585),
+#     "Johannesburg CBD": (-26.2041, 28.0473),
+#     "Midrand": (-26.1000, 28.0600),
+#     "Sandton": (-26.1450, 28.0425),
+#     "Meadowlands": (-26.2708, 27.8770)
+# }
 
-# Leader fallback locations
-leader_locations = {
-    "George": (-26.2678, 27.8585),
-    "Zodwa": (-26.2041, 28.0473),
-    "Fabion": (-26.1450, 28.0425),
-    "John": (-26.1000, 28.0600),
-    "Joseph": (-26.2708, 27.8770)
-}
+# # Leader fallback locations
+# leader_locations = {
+#     "George": (-26.2678, 27.8585),
+#     "Zodwa": (-26.2041, 28.0473),
+#     "Fabion": (-26.1450, 28.0425),
+#     "John": (-26.1000, 28.0600),
+#     "Joseph": (-26.2708, 27.8770)
+# }
 
 # ============================
 # GENERATE LOCATION FUNCTION
