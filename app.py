@@ -137,67 +137,38 @@ members = members.rename(columns={
     "Cellphone?": "Cellphone"
 })
 
-# ----------------------------
-# LOAD DATA (Google Sheets)
-# ----------------------------
-members = load_data()   # your existing code
 
-# ----------------------------
-# ✅ ADD GEOCODING HERE
-# ----------------------------
-from geopy.geocoders import Nominatim
-from time import sleep
+----------------------------
+CONTINUE APP (tabs etc.)
+----------------------------
+tab1, tab2, tab3...
+import random
 
-geolocator = Nominatim(user_agent="church_app")
+============================
+LOCATION MAPPING
+============================
 
-def geocode_address(address):
-    try:
-        location = geolocator.geocode(address)
-        if location:
-            return location.latitude, location.longitude
-    except:
-        return None, None
+# Area-based locations (from Address column)
+area_locations = {
+    "Polokwane Central": (-23.9045, 29.4689),
+    "Bendor": (-23.8890, 29.4740),
+    "Flora Park": (-23.9055, 29.4950),
+    "Ivy Park": (-23.8905, 29.4700),
+    "Seshego": (-23.8500, 29.3900),
+    "Mankweng": (-23.8895, 29.6950),
+    "Westenburg": (-23.9070, 29.4500),
+    "Penina Park": (-23.9000, 29.4800),
+    "Eduan Park": (-23.8800, 29.4600)
+}
 
-# Create columns if missing
-if "lat" not in members.columns:
-    members["lat"] = None
-    members["lon"] = None
-
-# Fill missing coordinates
-for i, row in members.iterrows():
-    if pd.isna(row["lat"]) or pd.isna(row["lon"]):
-        lat, lon = geocode_address(row["Address"])
-        members.at[i, "lat"] = lat
-        members.at[i, "lon"] = lon
-        sleep(1)
-
-# ----------------------------
-# CONTINUE APP (tabs etc.)
-# ----------------------------
-#tab1, tab2, tab3...
-#import random
-
-# ============================
-# LOCATION MAPPING
-# ============================
-
-# # Area-based locations (from Address column)
-# area_locations = {
-#     "Soweto": (-26.2678, 27.8585),
-#     "Johannesburg CBD": (-26.2041, 28.0473),
-#     "Midrand": (-26.1000, 28.0600),
-#     "Sandton": (-26.1450, 28.0425),
-#     "Meadowlands": (-26.2708, 27.8770)
-# }
-
-# # Leader fallback locations
-# leader_locations = {
-#     "George": (-26.2678, 27.8585),
-#     "Zodwa": (-26.2041, 28.0473),
-#     "Fabion": (-26.1450, 28.0425),
-#     "John": (-26.1000, 28.0600),
-#     "Joseph": (-26.2708, 27.8770)
-# }
+# Leader fallback locations
+leader_locations = {
+    "George": (-23.9045, 29.4689),     # Central
+    "Zodwa": (-23.8500, 29.3900),      # Seshego
+    "Fabion": (-23.8890, 29.4740),     # Bendor
+    "John": (-23.9070, 29.4500),       # Westenburg
+    "Joseph": (-23.8895, 29.6950)      # Mankweng
+}
 
 # ============================
 # GENERATE LOCATION FUNCTION
