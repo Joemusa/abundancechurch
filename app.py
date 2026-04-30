@@ -174,7 +174,7 @@ for i, row in members.iterrows():
 # ----------------------------
 # CONTINUE APP (tabs etc.)
 # ----------------------------
-tab1, tab2, tab3...
+#tab1, tab2, tab3...
 #import random
 
 # ============================
