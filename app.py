@@ -466,11 +466,11 @@ with tab2:
 # ----------------------------
 # ATTENDANCE PER WEEK
 # ----------------------------
-attendance_f["Timestamp"] = pd.to_datetime(attendance_f["Timestamp"], errors="coerce")
+attendance["Date"] = pd.to_datetime(attendance["Date"], errors="coerce")
 
-attendance_f["Week"] = attendance_f["Timestamp"].dt.to_period("W").astype(str)
+attendance["Week"] = attendance["Date"].dt.to_period("W").astype(str)
 
-attendance_week = attendance_f.groupby("Week")["MemberID"].nunique().reset_index()
+attendance_week = attendance.groupby("Week")["MemberID"].nunique().reset_index()
 attendance_week.columns = ["Week", "Attending Members"]
 
 st.markdown("### 📊 Attendance Per Week")
