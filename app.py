@@ -821,29 +821,29 @@ with tab10:
         st.subheader("📋 Captured Events")
         st.dataframe(df_events, use_container_width=True)
 
-import gspread
-from google.oauth2.service_account import Credentials
-
-scope = ["https://spreadsheets.google.com/feeds",
-         "https://www.googleapis.com/auth/drive"]
-
-creds = Credentials.from_service_account_file("credentials.json", scopes=scope)
-client = gspread.authorize(creds)
-
-sheet = client.open("ChurchApp").sheet1
-import gspread
-from google.oauth2.service_account import Credentials
-
-scope = [
-    "https://spreadsheets.google.com/feeds",
-    "https://www.googleapis.com/auth/drive"
-]
-
-creds = Credentials.from_service_account_file("credentials.json", scopes=scope)
-client = gspread.authorize(creds)
-
-# 👇 Open your Google Sheet (file name)
-spreadsheet = client.open("ChurchApp")   # <-- change if your file name is different
-
-# 👇 Select the TAB called "Events"
-sheet = spreadsheet.worksheet("Events")
+    import gspread
+    from google.oauth2.service_account import Credentials
+    
+    scope = ["https://spreadsheets.google.com/feeds",
+             "https://www.googleapis.com/auth/drive"]
+    
+    creds = Credentials.from_service_account_file("credentials.json", scopes=scope)
+    client = gspread.authorize(creds)
+    
+    sheet = client.open("ChurchApp").sheet1
+    import gspread
+    from google.oauth2.service_account import Credentials
+    
+    scope = [
+        "https://spreadsheets.google.com/feeds",
+        "https://www.googleapis.com/auth/drive"
+    ]
+    
+    creds = Credentials.from_service_account_file("credentials.json", scopes=scope)
+    client = gspread.authorize(creds)
+    
+    # 👇 Open your Google Sheet (file name)
+    spreadsheet = client.open("ChurchApp")   # <-- change if your file name is different
+    
+    # 👇 Select the TAB called "Events"
+    sheet = spreadsheet.worksheet("Events")
