@@ -512,7 +512,7 @@ with tab4:
     k1, k2, k3 = st.columns(3)
 
     with k1:
-        show_kpi("Total Visitors", new_vistors["MemberID"].nunique())
+        show_kpi("Total Visitors", new_visitors["MemberID"].nunique())
 
     with k2:
         show_kpi("Male", len(members_f[new_visitors["Gender"] == "Male"]))
