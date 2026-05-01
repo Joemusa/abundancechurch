@@ -458,7 +458,7 @@ with tab2:
     previous_total = total_members - 10   # 🔁 Replace later with real previous data
 
     growth = total_members - previous_total
-    growth_rate = (growth / previous_total * 100) if previous_total > 0 else 0
+    growth_rate = (attending_members/ total_members * 100) if previous_total > 0 else 0
 
     with k3:
         show_kpi("Growth Rate", f"{growth_rate:.1f}% (+{growth})")
