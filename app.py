@@ -533,6 +533,17 @@ with tab4:
 # NEW VISITORS TABLE
 # ============================
 with tab5:
+     k1, k2, k3 = st.columns(3)
+
+    with k1:
+        show_kpi("Total Members", members_f["MemberID"].nunique())
+
+    with k2:
+        show_kpi("Male", len(members_f[members_f["Gender"] == "Male"]))
+
+    with k3:
+        show_kpi("Female", len(members_f[members_f["Gender"] == "Female"]))
+    
     st.subheader("New Visitors")
     st.dataframe(new_visitors, use_container_width=True)
 
