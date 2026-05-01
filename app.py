@@ -463,35 +463,33 @@ with tab2:
     with k3:
         show_kpi("Growth Rate", f"{growth_rate:.1f}% (+{growth})")
 
-# ----------------------------
-# ATTENDANCE PER WEEK
-# ----------------------------
-# ----------------------------
-# ATTENDANCE PER DAY
-# ----------------------------
-attendance["Date"] = pd.to_datetime(attendance_f["Date"], errors="coerce")
 
-attendance["Day"] = attendance_f["Date"].dt.date
-
-attendance_day = (
-    attendance.groupby("Day")["MemberID"]
-    .nunique()
-    .reset_index()
-    .sort_values("Day")
-)
-
-st.markdown("### 📊 Attendance Per Day")
-
-fig_bar = px.bar(
-    attendance_day,
-    x="Day",
-    y="MemberID",   # ✅ use real column name
-    text="MemberID"
-)
-
-fig_bar.update_traces(textposition="outside")
-
-st.plotly_chart(fig_bar, use_container_width=True)
+    # ----------------------------
+    # ATTENDANCE PER DAY
+    # ----------------------------
+    attendance["Date"] = pd.to_datetime(attendance_f["Date"], errors="coerce")
+    
+    attendance["Day"] = attendance_f["Date"].dt.date
+    
+    attendance_day = (
+        attendance.groupby("Day")["MemberID"]
+        .nunique()
+        .reset_index()
+        .sort_values("Day")
+    )
+    
+    st.markdown("### 📊 Attendance Per Day")
+    
+    fig_bar = px.bar(
+        attendance_day,
+        x="Day",
+        y="MemberID",   # ✅ use real column name
+        text="MemberID"
+    )
+    
+    fig_bar.update_traces(textposition="outside")
+    
+    st.plotly_chart(fig_bar, use_container_width=True)
    
  
 # ============================
