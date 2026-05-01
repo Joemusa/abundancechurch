@@ -728,6 +728,27 @@ with tab10:
 
     from datetime import date
     
+    # ---------------------------
+    # PREPARE MEMBER DATA
+    # ---------------------------
+    
+    # Ensure FullName exists (FIX for your error)
+    members_f["FullName"] = (
+        members_f["First Name"].astype(str).str.strip() + " " +
+        members_f["Surname"].astype(str).str.strip()
+    )
+    
+    # Create dropdown options
+    member_options = members_f[["MemberID", "FullName"]].drop_duplicates()
+    
+    member_list = member_options.apply(
+        lambda x: f"{x['MemberID']} - {x['FullName']}", axis=1
+    ).tolist()
+    
+    # ---------------------------
+    # EVENT FORM
+    # ---------------------------
+    
     st.subheader("📅 Capture Church Event")
     
     with st.form("event_form"):
@@ -737,19 +758,65 @@ with tab10:
         with col1:
             event_type = st.selectbox(
                 "Event Type",
-                ["Anniversary", "Funeral", "Wedding", "Birthday"]
+                ["Wedding", "Funeral", "Birthday", "Anniversary"]
             )
     
             member_selection = st.selectbox(
                 "Select Member",
-                member_options.apply(lambda x: f"{x['MemberID']} - {x['FullName']}", axis=1)
+                member_list
             )
     
-            event_date = st.date_input("Event Date", value=date.today())
-    
         with col2:
-            status = st.selectbox("Status", ["Planned", "Completed"])
+            event_date = st.date_input(
+                "Event Date",
+                value=date.today()
+            )
     
-            notes = st.text_area("Notes")
+            status = st.selectbox(
+                "Status",
+                ["Planned", "Completed"]
+            )
     
+        notes = st.text_area("Notes")
+    
+        # ✅ REQUIRED SUBMIT BUTTON (fixes your error)
         submitted = st.form_submit_button("Save Event")
+    
+    # ---------------------------
+    # SAVE EVENT
+    # ---------------------------
+    
+    if "events" not in st.session_state:
+        st.session_state.events = []
+    
+    if submitted:
+    
+        # Extract MemberID
+        member_id = member_selection.split(" - ")[0]
+    
+        # Get full member details
+        member_row = members_f[members_f["MemberID"] == member_id].iloc[0]
+    
+        new_event = {
+            "MemberID": member_id,
+            "Member Name": member_row["FullName"],
+            "Cellphone": member_row["Cellphone"],
+            "Event Type": event_type,
+            "Event Date": event_date,
+            "Status": status,
+            "Notes": notes
+        }
+    
+        st.session_state.events.append(new_event)
+    
+        st.success(f"✅ Event saved for {member_row['FullName']}")
+    
+    # ---------------------------
+    # DISPLAY EVENTS
+    # ---------------------------
+    
+    if st.session_state.events:
+        df_events = pd.DataFrame(st.session_state.events)
+    
+        st.subheader("📋 Captured Events")
+        st.dataframe(df_events, use_container_width=True)
