@@ -512,14 +512,15 @@ with tab4:
     k1, k2, k3 = st.columns(3)
 
     with k1:
-        show_kpi("Total Visitors", new_visitors["MemberID"].nunique())
+        show_kpi("Total Members", members_f["MemberID"].nunique())
 
     with k2:
-        show_kpi("Male", new_visitors[new_visitors["Gender"] == "Male"]["MemberID"].count())
+        show_kpi("Male", len(members_f[members_f["Gender"] == "Male"]))
 
     with k3:
-        show_kpi("Female", new_visitors[new_visitors["Gender"] == "Female"]["MemberID"].count())
-        
+        show_kpi("Female", len(members_f[members_f["Gender"] == "Female"]))
+    
+       
     st.subheader("Attendance Table")
     st.dataframe(attendance_f, use_container_width=True)
    
@@ -536,13 +537,13 @@ with tab5:
     k1, k2, k3 = st.columns(3)
 
     with k1:
-        show_kpi("Total Members", members_f["MemberID"].nunique())
+        show_kpi("Total Visitors", new_visitors["MemberID"].nunique())
 
     with k2:
-        show_kpi("Male", len(members_f[members_f["Gender"] == "Male"]))
+        show_kpi("Male", new_visitors[new_visitors["Gender"] == "Male"]["MemberID"].count())
 
     with k3:
-        show_kpi("Female", len(members_f[members_f["Gender"] == "Female"]))
+        show_kpi("Female", new_visitors[new_visitors["Gender"] == "Female"]["MemberID"].count())
     
     st.subheader("New Visitors")
     st.dataframe(new_visitors, use_container_width=True)
