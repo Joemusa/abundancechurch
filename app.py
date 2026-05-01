@@ -515,10 +515,10 @@ with tab4:
         show_kpi("Total Visitors", new_visitors["MemberID"].nunique())
 
     with k2:
-        show_kpi("Male", len(members_f[new_visitors["Gender"] == "Male"]))
+        show_kpi("Male", new_visitors[new_visitors["Gender"] == "Male"]["MemberID"].count())
 
     with k3:
-        show_kpi("Female", len(members_f[new_visitors["Gender"] == "Female"]))
+        show_kpi("Female", new_visitors[new_visitors["Gender"] == "Female"]["MemberID"].count())
         
     st.subheader("Attendance Table")
     st.dataframe(attendance_f, use_container_width=True)
