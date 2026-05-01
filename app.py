@@ -533,7 +533,7 @@ with tab4:
 # NEW VISITORS TABLE
 # ============================
 with tab5:
-     k1, k2, k3 = st.columns(3)
+    k1, k2, k3 = st.columns(3)
 
     with k1:
         show_kpi("Total Members", members_f["MemberID"].nunique())
