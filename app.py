@@ -356,6 +356,7 @@ tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9 = st.tabs([
     "💰 Tithing Members",
     "📩 Bulk SMS",
     "🗺️ Map"
+    "Events"
 ])
 
 # ============================
@@ -722,6 +723,8 @@ with tab9:
     if st.sidebar.button("Logout"):
         st.session_state.logged_in = False
         st.rerun()
+ 
+with tab10:       
 
 from datetime import date
 
