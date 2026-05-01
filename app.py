@@ -447,7 +447,7 @@ with tab2:
     # ----------------------------
     # ATTENDING MEMBERS
     # ----------------------------
-    attending_members = attendance_f["MemberID"].nunique()
+    attending_members = attendance_f["MemberID"].count()
 
     with k2:
         show_kpi("Attending Members", attending_members)
