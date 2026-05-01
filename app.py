@@ -473,7 +473,7 @@ with tab2:
     
     attendance_day = (
         attendance.groupby("Day")["MemberID"]
-        .nunique()
+        .count()
         .reset_index()
         .sort_values("Day")
     )
