@@ -824,16 +824,6 @@ with tab10:
     import gspread
     from google.oauth2.service_account import Credentials
     
-    scope = ["https://spreadsheets.google.com/feeds",
-             "https://www.googleapis.com/auth/drive"]
-    
-    creds = Credentials.from_service_account_file("credentials.json", scopes=scope)
-    client = gspread.authorize(creds)
-    
-    sheet = client.open("ChurchApp").sheet1
-    import gspread
-    from google.oauth2.service_account import Credentials
-    
     scope = [
         "https://spreadsheets.google.com/feeds",
         "https://www.googleapis.com/auth/drive"
@@ -847,3 +837,23 @@ with tab10:
     
     # 👇 Select the TAB called "Events"
     sheet = spreadsheet.worksheet("Events")
+
+    if submitted:
+    
+        member_id = member_selection.split(" - ")[0]
+        member_row = members_f[members_f["MemberID"] == member_id].iloc[0]
+    
+        member_name = member_row["FullName"]
+        cellphone = member_row["Cellphone"]
+    
+        sheet.append_row([
+            member_id,
+            member_name,
+            cellphone,
+            event_type,
+            str(event_date),
+            status,
+            notes
+        ])
+    
+        st.success(f"✅ Event saved to Google Sheets for {member_name}")
