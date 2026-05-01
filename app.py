@@ -461,7 +461,7 @@ with tab2:
     growth_rate = (attending_members/ total_members * 100) if previous_total > 0 else 0
 
     with k3:
-        show_kpi("Growth Rate", f"{growth_rate:.1f}% (+{growth})")
+        show_kpi("Growth Rate", f"{growth_rate:.1f}%")
 
 
     # ----------------------------
