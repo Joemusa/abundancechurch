@@ -726,30 +726,30 @@ with tab9:
  
 with tab10:       
 
-from datetime import date
-
-st.subheader("📅 Capture Church Event")
-
-with st.form("event_form"):
-
-    col1, col2 = st.columns(2)
-
-    with col1:
-        event_type = st.selectbox(
-            "Event Type",
-            ["Anniversary", "Funeral", "Wedding", "Birthday"]
-        )
-
-        member_selection = st.selectbox(
-            "Select Member",
-            member_options.apply(lambda x: f"{x['MemberID']} - {x['FullName']}", axis=1)
-        )
-
-        event_date = st.date_input("Event Date", value=date.today())
-
-    with col2:
-        status = st.selectbox("Status", ["Planned", "Completed"])
-
-        notes = st.text_area("Notes")
-
-    submitted = st.form_submit_button("Save Event")
+    from datetime import date
+    
+    st.subheader("📅 Capture Church Event")
+    
+    with st.form("event_form"):
+    
+        col1, col2 = st.columns(2)
+    
+        with col1:
+            event_type = st.selectbox(
+                "Event Type",
+                ["Anniversary", "Funeral", "Wedding", "Birthday"]
+            )
+    
+            member_selection = st.selectbox(
+                "Select Member",
+                member_options.apply(lambda x: f"{x['MemberID']} - {x['FullName']}", axis=1)
+            )
+    
+            event_date = st.date_input("Event Date", value=date.today())
+    
+        with col2:
+            status = st.selectbox("Status", ["Planned", "Completed"])
+    
+            notes = st.text_area("Notes")
+    
+        submitted = st.form_submit_button("Save Event")
