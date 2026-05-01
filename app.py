@@ -518,7 +518,7 @@ with tab4:
         show_kpi("Male", len(members_f[new_visitors["Gender"] == "Male"]))
 
     with k3:
-        show_kpi("Female", len(members_f[new visitors["Gender"] == "Female"]))
+        show_kpi("Female", len(members_f[new_visitors["Gender"] == "Female"]))
         
     st.subheader("Attendance Table")
     st.dataframe(attendance_f, use_container_width=True)
