@@ -401,7 +401,7 @@ with tab1:
     with k5:
         show_kpi("New Visitors", len(new_visitors))
 
-    with k6:atte
+    with k6:
         show_kpi("Absent Members", len(members_not_attending))
 
     with k7:
