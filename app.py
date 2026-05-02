@@ -548,8 +548,8 @@ with tab4:
     
        
     st.markdown(
-    "<h2 style='font-size:16px; color:white;'>Attendance Table</h2>",
-    unsafe_allow_html=True
+        "<h2 style='font-size:16px; color:white;'>Attendance Table</h2>",
+        unsafe_allow_html=True
     )
     st.dataframe(attendance_f, use_container_width=True)
    
