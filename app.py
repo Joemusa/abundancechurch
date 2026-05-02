@@ -881,6 +881,12 @@ with tab10:
     
         # 🔍 DEBUG (VERY IMPORTANT)
         st.write("Row being sent:", row_data)
+
+        if not sheet.get_all_values():
+            sheet.append_row([
+                "MemberID", "Member Name", "Cellphone",
+                "Event Type", "Event Date", "Status", "Notes"
+            ])
     
         # ✅ Append
         sheet.append_row(row_data, value_input_option="USER_ENTERED")
