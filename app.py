@@ -863,21 +863,27 @@ with tab10:
     sheet = spreadsheet.worksheet("Events")
 
     if submitted:
+
+        member_id = str(member_selection.split(" - ")[0])
     
-        member_id = member_selection.split(" - ")[0]
         member_row = members_f[members_f["MemberID"] == member_id].iloc[0]
     
-        member_name = member_row["FullName"]
-        cellphone = member_row["Cellphone"]
+        member_name = str(member_row["FullName"])
+        cellphone = str(member_row["Cellphone"]) if pd.notna(member_row["Cellphone"]) else ""
+    
+        event_type_val = str(event_type)
+        event_date_val = str(event_date)
+        status_val = str(status)
+        notes_val = str(notes) if notes else ""
     
         sheet.append_row([
             member_id,
             member_name,
             cellphone,
-            event_type,
-            str(event_date),
-            status,
-            notes
+            event_type_val,
+            event_date_val,
+            status_val,
+            notes_val
         ])
     
         st.success(f"✅ Event saved to Google Sheets for {member_name}")
