@@ -401,7 +401,7 @@ with tab1:
     with k5:
         show_kpi("New Visitors", len(new_visitors))
 
-    with k6:
+    with k6:atte
         show_kpi("Absent Members", len(members_not_attending))
 
     with k7:
@@ -548,7 +548,7 @@ with tab4:
     
        
     st.markdown(
-    "<h2 style='font-size:28px; color:white;'>Attendance Table</h2>",
+    "<h2 style='font-size:16px; color:white;'>Attendance Table</h2>",
     unsafe_allow_html=True
     )
     st.dataframe(attendance_f, use_container_width=True)
