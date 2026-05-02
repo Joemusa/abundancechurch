@@ -519,10 +519,11 @@ with tab2:
 # MEMBERS TABLE
 # ============================
 with tab3:
-    df_display = df.drop(columns=["lat", "lon"])
-    st.dataframe(df_display)
     st.subheader("Members Table")
-    st.dataframe(members_f, use_container_width=True)
+
+    df_display = members_f.drop(columns=["lat", "lon"], errors="ignore")
+
+    st.dataframe(df_display, use_container_width=True)
 
     st.download_button(
         "⬇ Export Members",
