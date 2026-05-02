@@ -813,27 +813,27 @@ with tab10:
     
     if submitted:
 
-    # Extract MemberID
-    member_id = member_selection.split(" - ")[0]
-
-    # Get member details
-    member_row = members_f[members_f["MemberID"] == member_id].iloc[0]
-
-    member_name = member_row["FullName"]
-    cellphone = member_row["Cellphone"]
-
-    # ✅ Save to Google Sheets
-    sheet.append_row([
-        member_id,
-        member_name,
-        cellphone,
-        event_type,
-        str(event_date),
-        status,
-        notes
-    ])
-
-    st.success(f"✅ Event saved to Google Sheets for {member_name}")
+        # Extract MemberID
+        member_id = member_selection.split(" - ")[0]
+    
+        # Get member details
+        member_row = members_f[members_f["MemberID"] == member_id].iloc[0]
+    
+        member_name = member_row["FullName"]
+        cellphone = member_row["Cellphone"]
+    
+        # ✅ Save to Google Sheets
+        sheet.append_row([
+            member_id,
+            member_name,
+            cellphone,
+            event_type,
+            str(event_date),
+            status,
+            notes
+        ])
+    
+        st.success(f"✅ Event saved to Google Sheets for {member_name}")
     
     # ---------------------------
     # DISPLAY EVENTS
