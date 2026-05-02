@@ -868,22 +868,21 @@ with tab10:
     
         member_row = members_f[members_f["MemberID"] == member_id].iloc[0]
     
-        member_name = str(member_row["FullName"])
-        cellphone = str(member_row["Cellphone"]) if pd.notna(member_row["Cellphone"]) else ""
+        # Convert EVERYTHING safely
+        row_data = [
+            str(member_id),
+            str(member_row.get("FullName", "")),
+            str(member_row.get("Cellphone", "")),
+            str(event_type),
+            str(event_date),
+            str(status),
+            str(notes) if notes else ""
+        ]
     
-        event_type_val = str(event_type)
-        event_date_val = str(event_date)
-        status_val = str(status)
-        notes_val = str(notes) if notes else ""
+        # 🔍 DEBUG (VERY IMPORTANT)
+        st.write("Row being sent:", row_data)
     
-        sheet.append_row([
-            member_id,
-            member_name,
-            cellphone,
-            event_type_val,
-            event_date_val,
-            status_val,
-            notes_val
-        ])
+        # ✅ Append
+        sheet.append_row(row_data, value_input_option="USER_ENTERED")
     
-        st.success(f"✅ Event saved to Google Sheets for {member_name}")
+        st.success(f"✅ Event saved to Google Sheets for {member_row['FullName']}")
