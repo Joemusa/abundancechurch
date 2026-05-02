@@ -519,6 +519,8 @@ with tab2:
 # MEMBERS TABLE
 # ============================
 with tab3:
+    df_display = df.drop(columns=["lat", "lon"])
+    st.dataframe(df_display)
     st.subheader("Members Table")
     st.dataframe(members_f, use_container_width=True)
 
