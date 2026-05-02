@@ -746,149 +746,92 @@ with tab9:
         st.session_state.logged_in = False
         st.rerun()
  
-with tab10:       
+with tab10:
 
     from datetime import date
-    
+    import pandas as pd
+
     # ---------------------------
     # PREPARE MEMBER DATA
     # ---------------------------
-    
-    # Ensure FullName exists (FIX for your error)
+
     members_f["FullName"] = (
         members_f["First Name"].astype(str).str.strip() + " " +
         members_f["Surname"].astype(str).str.strip()
     )
-    
-    # Create dropdown options
+
     member_options = members_f[["MemberID", "FullName"]].drop_duplicates()
-    
+
     member_list = member_options.apply(
         lambda x: f"{x['MemberID']} - {x['FullName']}", axis=1
     ).tolist()
-    
+
     # ---------------------------
-    # EVENT FORM
+    # FORM
     # ---------------------------
-    
+
     st.subheader("📅 Capture Church Event")
-    
+
     with st.form("event_form"):
-    
+
         col1, col2 = st.columns(2)
-    
+
         with col1:
             event_type = st.selectbox(
                 "Event Type",
                 ["Wedding", "Funeral", "Birthday", "Anniversary"]
             )
-    
+
             member_selection = st.selectbox(
                 "Select Member",
                 member_list
             )
-    
+
         with col2:
-            event_date = st.date_input(
-                "Event Date",
-                value=date.today()
-            )
-    
-            status = st.selectbox(
-                "Status",
-                ["Planned", "Completed"]
-            )
-    
+            event_date = st.date_input("Event Date", value=date.today())
+
+            status = st.selectbox("Status", ["Planned", "Completed"])
+
         notes = st.text_area("Notes")
-    
-        # ✅ REQUIRED SUBMIT BUTTON (fixes your error)
+
         submitted = st.form_submit_button("Save Event")
-    
-    # ---------------------------
-    # SAVE EVENT
-    # ---------------------------
-    
-    if "events" not in st.session_state:
-        st.session_state.events = []
-    
-    if submitted:
 
-        # Extract MemberID
-        member_id = member_selection.split(" - ")[0]
-    
-        # Get member details
-        member_row = members_f[members_f["MemberID"] == member_id].iloc[0]
-    
-        member_name = member_row["FullName"]
-        cellphone = member_row["Cellphone"]
-    
-        # ✅ Save to Google Sheets
-        sheet.append_row([
-            member_id,
-            member_name,
-            cellphone,
-            event_type,
-            str(event_date),
-            status,
-            notes
-        ])
-    
-        st.success(f"✅ Event saved to Google Sheets for {member_name}")
-    
     # ---------------------------
-    # DISPLAY EVENTS
+    # SAVE EVENT (ONLY ONCE)
     # ---------------------------
-    
-    if st.session_state.events:
-        df_events = pd.DataFrame(st.session_state.events)
-    
-        st.subheader("📋 Captured Events")
-        st.dataframe(df_events, use_container_width=True)
-
-    import gspread
-    from google.oauth2.service_account import Credentials
-    
-    scope = [
-        "https://spreadsheets.google.com/feeds",
-        "https://www.googleapis.com/auth/drive"
-    ]
-    
-    #creds = Credentials.from_service_account_file("credentials.json", scopes=scope)
-    client = gspread.authorize(creds)
-    
-    # 👇 Open your Google Sheet (file name)
-    spreadsheet = client.open("ChurchApp")   # <-- change if your file name is different
-    
-    # 👇 Select the TAB called "Events"
-    sheet = spreadsheet.worksheet("Events")
 
     if submitted:
 
-        member_id = str(member_selection.split(" - ")[0])
-    
-        member_row = members_f[members_f["MemberID"] == member_id].iloc[0]
-    
-        # Convert EVERYTHING safely
-        row_data = [
-            str(member_id),
-            str(member_row.get("FullName", "")),
-            str(member_row.get("Cellphone", "")),
-            str(event_type),
-            str(event_date),
-            str(status),
-            str(notes) if notes else ""
-        ]
-    
-        # 🔍 DEBUG (VERY IMPORTANT)
-        st.write("Row being sent:", row_data)
+        try:
+            member_id = str(member_selection.split(" - ")[0])
 
-        if not sheet.get_all_values():
-            sheet.append_row([
-                "MemberID", "Member Name", "Cellphone",
-                "Event Type", "Event Date", "Status", "Notes"
-            ])
-    
-        # ✅ Append
-        sheet.append_row(row_data, value_input_option="USER_ENTERED")
-    
-        st.success(f"✅ Event saved to Google Sheets for {member_row['FullName']}")
+            member_row = members_f[members_f["MemberID"] == member_id].iloc[0]
+
+            row_data = [
+                str(member_id),
+                str(member_row.get("FullName", "")),
+                str(member_row.get("Cellphone", "")),
+                str(event_type),
+                str(event_date),
+                str(status),
+                str(notes) if notes else ""
+            ]
+
+            st.write("DEBUG ROW:", row_data)
+
+            # Ensure headers exist
+            if not sheet.get_all_values():
+                sheet.append_row([
+                    "MemberID", "Member Name", "Cellphone",
+                    "Event Type", "Event Date", "Status", "Notes"
+                ])
+
+            # ✅ SAFE append
+            sheet.append_rows([row_data], value_input_option="USER_ENTERED")
+
+            st.success("✅ Event saved to Google Sheets")
+
+        except Exception as e:
+            st.error(f"Error saving event: {e}")  
+
+   
