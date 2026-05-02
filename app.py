@@ -817,14 +817,14 @@ with tab10:
                 str(notes) if notes else ""
             ]
 
-            st.write("DEBUG ROW:", row_data)
+            #st.write("DEBUG ROW:", row_data)
 
             # Ensure headers exist
-            if not sheet.get_all_values():
-                sheet.append_row([
-                    "MemberID", "Member Name", "Cellphone",
-                    "Event Type", "Event Date", "Status", "Notes"
-                ])
+            # if not sheet.get_all_values():
+            #     sheet.append_row([
+            #         "MemberID", "Member Name", "Cellphone",
+            #         "Event Type", "Event Date", "Status", "Notes"
+            #     ])
 
             # ✅ SAFE append
             sheet.append_rows([row_data], value_input_option="USER_ENTERED")
