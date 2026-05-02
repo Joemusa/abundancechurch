@@ -342,6 +342,26 @@ def clean_chart(fig):
     )
     return fig
 
+import gspread
+from google.oauth2.service_account import Credentials
+import streamlit as st
+
+@st.cache_resource
+def connect_google():
+    creds = Credentials.from_service_account_info(
+        st.secrets["gcp_service_account"],  # ✅ from secrets
+        scopes=[
+            "https://spreadsheets.google.com/feeds",
+            "https://www.googleapis.com/auth/drive"
+        ]
+    )
+    return gspread.authorize(creds)
+
+client = connect_google()
+
+# Open file + tab
+spreadsheet = client.open("ChurchApp")
+sheet = spreadsheet.worksheet("Events")
 
 # ----------------------------
 # TABS
@@ -358,6 +378,8 @@ tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9, tab10 = st.tabs([
     "🗺️ Map",
     "Events"
 ])
+
+
 
 # ============================
 # Demographics
@@ -790,26 +812,28 @@ with tab10:
         st.session_state.events = []
     
     if submitted:
-    
-        # Extract MemberID
-        member_id = member_selection.split(" - ")[0]
-    
-        # Get full member details
-        member_row = members_f[members_f["MemberID"] == member_id].iloc[0]
-    
-        new_event = {
-            "MemberID": member_id,
-            "Member Name": member_row["FullName"],
-            "Cellphone": member_row["Cellphone"],
-            "Event Type": event_type,
-            "Event Date": event_date,
-            "Status": status,
-            "Notes": notes
-        }
-    
-        st.session_state.events.append(new_event)
-    
-        st.success(f"✅ Event saved for {member_row['FullName']}")
+
+    # Extract MemberID
+    member_id = member_selection.split(" - ")[0]
+
+    # Get member details
+    member_row = members_f[members_f["MemberID"] == member_id].iloc[0]
+
+    member_name = member_row["FullName"]
+    cellphone = member_row["Cellphone"]
+
+    # ✅ Save to Google Sheets
+    sheet.append_row([
+        member_id,
+        member_name,
+        cellphone,
+        event_type,
+        str(event_date),
+        status,
+        notes
+    ])
+
+    st.success(f"✅ Event saved to Google Sheets for {member_name}")
     
     # ---------------------------
     # DISPLAY EVENTS
@@ -829,7 +853,7 @@ with tab10:
         "https://www.googleapis.com/auth/drive"
     ]
     
-    creds = Credentials.from_service_account_file("credentials.json", scopes=scope)
+    #creds = Credentials.from_service_account_file("credentials.json", scopes=scope)
     client = gspread.authorize(creds)
     
     # 👇 Open your Google Sheet (file name)
