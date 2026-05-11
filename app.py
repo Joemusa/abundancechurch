@@ -838,13 +838,15 @@ with tab10:
         except Exception as e:
             st.error(f"Error saving event: {e}")  
 
-# ============================
-# Intertional Contacts
-# ============================
-with tab3:
-    st.subheader("Intertional Contacts")
 
-   
+with tab11:
+    
+    import streamlit as st
+    import pandas as pd
+    from datetime import date
+    import gspread
+    from google.oauth2.service_account import Credentials
+    
     # -------------------------
     # GOOGLE SHEETS CONNECTION
     # -------------------------
@@ -871,11 +873,10 @@ with tab3:
     st.title("Intentional Visits")
     
     # -------------------------
-    # POPUP FORM
+    # COLLAPSIBLE FORM
     # -------------------------
     
-    @st.dialog("Capture Intentional Visit")
-    def intentional_visit_form():
+    with st.expander("➕ Add Intentional Visit"):
     
         with st.form("visit_form"):
     
@@ -910,13 +911,6 @@ with tab3:
                 st.success("Visit successfully captured.")
     
     # -------------------------
-    # BUTTON TO OPEN POPUP
-    # -------------------------
-    
-    if st.button("➕ Add Intentional Visit"):
-        intentional_visit_form()
-    
-    # -------------------------
     # VIEW DATA
     # -------------------------
     
@@ -927,6 +921,9 @@ with tab3:
     data = worksheet.get_all_records()
     
     df = pd.DataFrame(data)
+    
+    # Latest records first
+    df = df.iloc[::-1]
     
     st.dataframe(
         df,
