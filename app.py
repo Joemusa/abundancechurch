@@ -118,7 +118,7 @@ client = gspread.authorize(creds)
 members = pd.DataFrame(client.open("ChurchApp").worksheet("Members").get_all_records())
 attendance = pd.DataFrame(client.open("ChurchApp").worksheet("Attendance").get_all_records())
 tithing = pd.DataFrame(client.open("ChurchApp").worksheet("Tithing").get_all_records())
-visits = pd.DataFrame(client.open("ChurchApp").worksheet("Intertional Contacts").get_all_records())
+visits = pd.DataFrame(client.open("ChurchApp").worksheet("Intentional Contacts").get_all_records())
 
 if not members.empty:
     members.columns = members.columns.str.strip()
