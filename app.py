@@ -366,7 +366,7 @@ sheet = spreadsheet.worksheet("Events")
 # ----------------------------
 # TABS
 # ----------------------------
-tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9, tab10 = st.tabs([
+tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9, tab10, tab11 = st.tabs([
     "📊 Demographics",
     "📈 Growth",
     "👥 Total Members",
@@ -377,6 +377,7 @@ tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9, tab10 = st.tabs([
     "📩 Bulk SMS",
     "🗺️ Map",
     "Events"
+    "Intertional Contacts"
 ])
 
 
@@ -840,4 +841,18 @@ with tab10:
         except Exception as e:
             st.error(f"Error saving event: {e}")  
 
-   
+# ============================
+# Intertional Contacts
+# ============================
+with tab3:
+    st.subheader("Intertional Contacts")
+
+    df_display = members_f.drop(columns=["lat", "lon","color","MemberID","Full Name","Region"], errors="ignore")
+
+    st.dataframe(df_display, use_container_width=True)
+
+    st.download_button(
+        "⬇ Export Members",
+        members_f.to_csv(index=False),
+        "members.csv"
+    )
