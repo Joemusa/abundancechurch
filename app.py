@@ -907,3 +907,21 @@ if submitted:
     ])
 
     st.success("Visit successfully captured.")
+
+st.divider()
+
+st.subheader("Intentional Visits Records")
+
+# Get all records from Google Sheet
+data = worksheet.get_all_records()
+
+# Convert to DataFrame
+df = pd.DataFrame(data)
+
+# Show table
+st.dataframe(
+    df,
+    use_container_width=True
+)
+
+Your full app flo
