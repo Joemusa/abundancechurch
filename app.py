@@ -844,97 +844,92 @@ with tab10:
 with tab3:
     st.subheader("Intertional Contacts")
 
-   import streamlit as st
-import pandas as pd
-from datetime import date
-import gspread
-from google.oauth2.service_account import Credentials
-
-# -------------------------
-# GOOGLE SHEETS CONNECTION
-# -------------------------
-
-scope = [
-    "https://www.googleapis.com/auth/spreadsheets",
-    "https://www.googleapis.com/auth/drive"
-]
-
-creds = Credentials.from_service_account_info(
-    st.secrets["gcp_service_account"],
-    scopes=scope
-)
-
-client = gspread.authorize(creds)
-
-sheet = client.open("ChurchApp")
-worksheet = sheet.worksheet("Intentional Contacts")
-
-# -------------------------
-# PAGE TITLE
-# -------------------------
-
-st.title("Intentional Visits")
-
-# -------------------------
-# POPUP FORM
-# -------------------------
-
-@st.dialog("Capture Intentional Visit")
-def intentional_visit_form():
-
-    with st.form("visit_form"):
-
-        zone_leader = st.text_input("Zone Leader")
-
-        visit_date = st.date_input(
-            "Date",
-            value=date.today()
-        )
-
-        person_visited = st.text_input("Person Visited")
-
-        reason_for_visit = st.text_area("Reason for Visit")
-
-        address = st.text_area("Address")
-
-        contact_number = st.text_input("Contact Number")
-
-        submitted = st.form_submit_button("Submit Visit")
-
-        if submitted:
-
-            worksheet.append_row([
-                zone_leader,
-                str(visit_date),
-                person_visited,
-                reason_for_visit,
-                address,
-                contact_number
-            ])
-
-            st.success("Visit successfully captured.")
-
-# -------------------------
-# BUTTON TO OPEN POPUP
-# -------------------------
-
-if st.button("➕ Add Intentional Visit"):
-    intentional_visit_form()
-
-# -------------------------
-# VIEW DATA
-# -------------------------
-
-st.divider()
-
-st.subheader("Intentional Visits Records")
-
-data = worksheet.get_all_records()
-
-df = pd.DataFrame(data)
-
-st.dataframe(
-    df,
-    use_container_width=True,
-    height=500
-)
+   
+    # -------------------------
+    # GOOGLE SHEETS CONNECTION
+    # -------------------------
+    
+    scope = [
+        "https://www.googleapis.com/auth/spreadsheets",
+        "https://www.googleapis.com/auth/drive"
+    ]
+    
+    creds = Credentials.from_service_account_info(
+        st.secrets["gcp_service_account"],
+        scopes=scope
+    )
+    
+    client = gspread.authorize(creds)
+    
+    sheet = client.open("ChurchApp")
+    worksheet = sheet.worksheet("Intentional Contacts")
+    
+    # -------------------------
+    # PAGE TITLE
+    # -------------------------
+    
+    st.title("Intentional Visits")
+    
+    # -------------------------
+    # POPUP FORM
+    # -------------------------
+    
+    @st.dialog("Capture Intentional Visit")
+    def intentional_visit_form():
+    
+        with st.form("visit_form"):
+    
+            zone_leader = st.text_input("Zone Leader")
+    
+            visit_date = st.date_input(
+                "Date",
+                value=date.today()
+            )
+    
+            person_visited = st.text_input("Person Visited")
+    
+            reason_for_visit = st.text_area("Reason for Visit")
+    
+            address = st.text_area("Address")
+    
+            contact_number = st.text_input("Contact Number")
+    
+            submitted = st.form_submit_button("Submit Visit")
+    
+            if submitted:
+    
+                worksheet.append_row([
+                    zone_leader,
+                    str(visit_date),
+                    person_visited,
+                    reason_for_visit,
+                    address,
+                    contact_number
+                ])
+    
+                st.success("Visit successfully captured.")
+    
+    # -------------------------
+    # BUTTON TO OPEN POPUP
+    # -------------------------
+    
+    if st.button("➕ Add Intentional Visit"):
+        intentional_visit_form()
+    
+    # -------------------------
+    # VIEW DATA
+    # -------------------------
+    
+    st.divider()
+    
+    st.subheader("Intentional Visits Records")
+    
+    data = worksheet.get_all_records()
+    
+    df = pd.DataFrame(data)
+    
+    st.dataframe(
+        df,
+        use_container_width=True,
+        height=500
+    )
