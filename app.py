@@ -844,7 +844,13 @@ with tab10:
 with tab3:
     st.subheader("Intertional Contacts")
 
-    # -------------------------
+   import streamlit as st
+import pandas as pd
+from datetime import date
+import gspread
+from google.oauth2.service_account import Credentials
+
+# -------------------------
 # GOOGLE SHEETS CONNECTION
 # -------------------------
 
@@ -860,70 +866,75 @@ creds = Credentials.from_service_account_info(
 
 client = gspread.authorize(creds)
 
-# Open spreadsheet
 sheet = client.open("ChurchApp")
-
-# Open worksheet/tab
 worksheet = sheet.worksheet("Intentional Contacts")
 
 # -------------------------
-# STREAMLIT FORM
+# PAGE TITLE
 # -------------------------
 
 st.title("Intentional Visits")
 
-with st.form("visit_form"):
-
-    zone_leader = st.text_input("Zone Leader")
-
-    visit_date = st.date_input(
-        "Date",
-        value=date.today()
-    )
-
-    person_visited = st.text_input("Person Visited")
-
-    reason_for_visit = st.text_area("Reason for Visit")
-
-    address = st.text_area("Address")
-
-    contact_number = st.text_input("Contact Number")
-
-    submitted = st.form_submit_button("Submit Visit")
-
 # -------------------------
-# SAVE TO GOOGLE SHEETS
+# POPUP FORM
 # -------------------------
 
-if submitted:
+@st.dialog("Capture Intentional Visit")
+def intentional_visit_form():
 
-    worksheet.append_row([
-        zone_leader,
-        str(visit_date),
-        person_visited,
-        reason_for_visit,
-        address,
-        contact_number
-    ])
+    with st.form("visit_form"):
 
-    st.success("Visit successfully captured.")
+        zone_leader = st.text_input("Zone Leader")
 
-    # -------------------------
-    # VIEW DATA FROM GOOGLE SHEET
-    # -------------------------
-    
-    st.divider()
-    
-    st.subheader("Intentional Visits Records")
-    
-    # Get all records from Google Sheet
-    data = worksheet.get_all_records()
-    
-    # Convert to DataFrame
-    df = pd.DataFrame(data)
-    
-    # Show table
-    st.dataframe(
-        df,
-        use_container_width=True
-    )
+        visit_date = st.date_input(
+            "Date",
+            value=date.today()
+        )
+
+        person_visited = st.text_input("Person Visited")
+
+        reason_for_visit = st.text_area("Reason for Visit")
+
+        address = st.text_area("Address")
+
+        contact_number = st.text_input("Contact Number")
+
+        submitted = st.form_submit_button("Submit Visit")
+
+        if submitted:
+
+            worksheet.append_row([
+                zone_leader,
+                str(visit_date),
+                person_visited,
+                reason_for_visit,
+                address,
+                contact_number
+            ])
+
+            st.success("Visit successfully captured.")
+
+# -------------------------
+# BUTTON TO OPEN POPUP
+# -------------------------
+
+if st.button("➕ Add Intentional Visit"):
+    intentional_visit_form()
+
+# -------------------------
+# VIEW DATA
+# -------------------------
+
+st.divider()
+
+st.subheader("Intentional Visits Records")
+
+data = worksheet.get_all_records()
+
+df = pd.DataFrame(data)
+
+st.dataframe(
+    df,
+    use_container_width=True,
+    height=500
+)
