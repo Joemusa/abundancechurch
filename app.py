@@ -908,6 +908,10 @@ if submitted:
 
     st.success("Visit successfully captured.")
 
+    # -------------------------
+    # VIEW DATA FROM GOOGLE SHEET
+    # -------------------------
+    
     st.divider()
     
     st.subheader("Intentional Visits Records")
@@ -923,5 +927,3 @@ if submitted:
         df,
         use_container_width=True
     )
-    
-Your full app flo
