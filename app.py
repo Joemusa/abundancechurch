@@ -258,12 +258,12 @@ st.sidebar.header("🔍 Filters")
 
 gender_options = sorted([x for x in members["Gender"].dropna().unique() if str(x).strip() != ""])
 leader_options = sorted([x for x in members["Zone Leader"].dropna().unique() if str(x).strip() != ""])
-#region_options = sorted([x for x in members["Region"].dropna().unique() if str(x).strip() != ""])
+branche_options = sorted([x for x in members["Branch"].dropna().unique() if str(x).strip() != ""])
 employment_options = sorted([x for x in members["Employment Status"].dropna().unique() if str(x).strip() != ""])
 
 gender = st.sidebar.multiselect("Gender", gender_options, default=gender_options)
 leader = st.sidebar.multiselect("Zone Leader", leader_options, default=leader_options)
-#region = st.sidebar.multiselect("Region", region_options, default=region_options)
+branch = st.sidebar.multiselect("Branch", branch_options, default=branch_options)
 employment = st.sidebar.multiselect("Employment Status", employment_options, default=employment_options)
 
 date_range = st.sidebar.date_input("Select Date Range", [])
@@ -272,13 +272,14 @@ date_range = st.sidebar.date_input("Select Date Range", [])
 # FILTER DATA
 # ----------------------------
 members_f = members.copy()
+attendance_f = attendance.copy()
 
 if gender:
     members_f = members_f[members_f["Gender"].isin(gender)]
 if leader:
     members_f = members_f[members_f["Zone Leader"].isin(leader)]
-#if region:
-   # members_f = members_f[members_f["Region"].isin(region)]
+if region:
+   members_f = members_f[members_f["Branch"].isin(region)]
 if employment:
     members_f = members_f[members_f["Employment Status"].isin(employment)]
 
@@ -291,6 +292,12 @@ if "Date" in attendance_f.columns and len(date_range) == 2:
         (attendance_f["Date"] >= start_date) &
         (attendance_f["Date"] <= end_date)
     ]
+
+filtered_member_ids = attendance_f["MemberID"].astype(str).unique()
+
+members_f = members_f[
+    members_f["MemberID"].astype(str).isin(filtered_member_ids)
+]
 
 # ----------------------------
 # DERIVED TABLES
