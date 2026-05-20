@@ -258,7 +258,7 @@ st.sidebar.header("🔍 Filters")
 
 gender_options = sorted([x for x in members["Gender"].dropna().unique() if str(x).strip() != ""])
 leader_options = sorted([x for x in members["Zone Leader"].dropna().unique() if str(x).strip() != ""])
-branche_options = sorted([x for x in members["Branch"].dropna().unique() if str(x).strip() != ""])
+branch_options = sorted([x for x in members["Branch"].dropna().unique() if str(x).strip() != ""])
 employment_options = sorted([x for x in members["Employment Status"].dropna().unique() if str(x).strip() != ""])
 
 gender = st.sidebar.multiselect("Gender", gender_options, default=gender_options)
