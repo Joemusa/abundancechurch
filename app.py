@@ -278,8 +278,8 @@ if gender:
     members_f = members_f[members_f["Gender"].isin(gender)]
 if leader:
     members_f = members_f[members_f["Zone Leader"].isin(leader)]
-if region:
-   members_f = members_f[members_f["Branch"].isin(region)]
+if branch:
+   members_f = members_f[members_f["Branch"].isin(branch)]
 if employment:
     members_f = members_f[members_f["Employment Status"].isin(employment)]
 
