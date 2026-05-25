@@ -8,7 +8,6 @@ from google.oauth2.service_account import Credentials
 
 import pydeck as pdk
 
-
 # ----------------------------
 # CONFIG
 # ----------------------------F
@@ -615,11 +614,11 @@ with tab7:
     )
 
 # =========================
-# BULK SMS
+# BULK WHATSAPP
 # =========================
 
 with tab8:
-    st.subheader("📩 Send Bulk SMS (BulkSMS)")
+    st.subheader("📩 Send Bulk SMS (BulkWhatsapp)")
 
     leader_options = sorted(members["Status"].dropna().unique())
     selected_leaders = st.multiselect("Select Leader(s)", leader_options)
@@ -641,7 +640,7 @@ with tab8:
 
     message = st.text_area("Message", max_chars=160)
 
-    if st.button("Send SMS", key="bulksms"):
+    if st.button("Send WHARSAPP", key="bulksms"):
         for number in recipients:
             url = "https://api.bulksms.com/v1/messages"
 
