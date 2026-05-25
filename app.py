@@ -618,7 +618,7 @@ with tab7:
 # =========================
 
 with tab8:
-    st.subheader("📩 Send Bulk SMS (BulkWhatsapp)")
+    st.subheader("📩 Send Bulk WhatsApp")
 
     leader_options = sorted(members["Status"].dropna().unique())
     selected_leaders = st.multiselect("Select Leader(s)", leader_options)
