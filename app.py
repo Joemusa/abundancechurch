@@ -126,14 +126,6 @@ if not attendance.empty:
     attendance.columns = attendance.columns.str.strip()
    
 
-#members = members.rename(columns={
- #   "First Name?": "First Name",
-  #  "Surname?": "Surname",
-   # "Employment Status?": "Employment Status",
-    #"Cellphone?": "Cellphone"
-#})
-
-
 #----------------------------
 #CONTINUE APP (tabs etc.)
 #----------------------------
@@ -310,8 +302,8 @@ if not new_visitors.empty:
     new_visitors = new_visitors.sort_values("Date", ascending=False)
 
 attended_member_ids = set(attendance_f["MemberID"].dropna().astype(str).str.strip())
-members_not_attending = members_f[
-    ~members_f["MemberID"].isin(attended_member_ids)
+members_not_attending = members[
+    ~members["MemberID"].isin(attended_member_ids)
 ].copy()
 
 # ----------------------------
