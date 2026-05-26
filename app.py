@@ -448,7 +448,7 @@ with tab1:
 # GROWTH
 # ============================
 
-with tab2:
+with tab3:
 
     k1, k2, k3 = st.columns(3)
 
@@ -511,7 +511,7 @@ with tab2:
 # ============================
 # MEMBERS TABLE
 # ============================
-with tab3:
+with tab2:
     st.subheader("Members Table")
 
     df_display = members.drop(columns=["lat", "lon","color","MemberID","Full Name","Region"], errors="ignore")
