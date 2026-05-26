@@ -390,14 +390,8 @@ tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9, tab10, tab11 = st.tabs([
 with tab1:
     k1, k2, k3, k4, k5, k6, k7 = st.columns(7)
     with k1:
-        #show_kpi("Total Members", members_f["MemberID"].nunique())
-        total_members = members_f["MemberID"].nunique()
-
-        attending_members = attendance_f["MemberID"].nunique()
-
-        show_kpi("Total Members", total_members)
-        #show_kpi("Present Members", attending_members)
-
+        show_kpi("Total Members", members["MemberID"].nunique())
+        
     with k2:
         show_kpi("Male", len(members_f[members_f["Gender"] == "Male"]))
 
