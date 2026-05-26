@@ -393,10 +393,10 @@ with tab1:
         show_kpi("Total Members", members["MemberID"].nunique())
         
     with k2:
-        show_kpi("Male", len(members_f[members_f["Gender"] == "Male"]))
+        show_kpi("Male", len(members[members["Gender"] == "Male"]))
 
     with k3:
-        show_kpi("Female", len(members_f[members_f["Gender"] == "Female"]))
+        show_kpi("Female", len(members[members["Gender"] == "Female"]))
 
     with k4:
         show_kpi("Present Members", len(attendance_f))
