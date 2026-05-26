@@ -129,7 +129,7 @@ if not attendance.empty:
 #----------------------------
 #CONTINUE APP (tabs etc.)
 #----------------------------
-#tab1, tab2, tab3...
+
 import random
 
 #============================
@@ -514,7 +514,7 @@ with tab2:
 with tab3:
     st.subheader("Members Table")
 
-    df_display = members_f.drop(columns=["lat", "lon","color","MemberID","Full Name","Region"], errors="ignore")
+    df_display = members.drop(columns=["lat", "lon","color","MemberID","Full Name","Region"], errors="ignore")
 
     st.dataframe(df_display, use_container_width=True)
 
