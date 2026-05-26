@@ -416,7 +416,7 @@ with tab1:
     with c1:
         st.markdown('<div class="chart-card">', unsafe_allow_html=True)
         st.markdown("<h4 style='color:white;'>Gender Distribution</h4>", unsafe_allow_html=True)
-        gender_data = members_f["Gender"].dropna()
+        gender_data = members["Gender"].dropna()
         gender_data = gender_data[gender_data.astype(str).str.strip() != ""]
         if not gender_data.empty:
             fig = px.pie(names=gender_data, values=[1] * len(gender_data))
@@ -451,8 +451,6 @@ with tab1:
             st.info("No data available")
         st.markdown('</div>', unsafe_allow_html=True)
 
-
-    
 
 # ============================
 # GROWTH
