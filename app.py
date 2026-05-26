@@ -360,7 +360,7 @@ sheet = spreadsheet.worksheet("Events")
 # ----------------------------
 # TABS
 # ----------------------------
-tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9, tab10, tab11 = st.tabs([
+tab3, tab2, tab1, tab4, tab5, tab6, tab7, tab8, tab9, tab10, tab11 = st.tabs([
     "📊 Demographics",
     "📈 Growth",
     "👥 Total Members",
