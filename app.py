@@ -429,7 +429,7 @@ with tab1:
 
     with c2:
         st.markdown('<div class="chart-card">', unsafe_allow_html=True)
-        emp = members_f["Employment Status"].value_counts().reset_index()
+        emp = members["Employment Status"].value_counts().reset_index()
         emp.columns = ["Employment", "Count"]
         if not emp.empty:
             fig = px.bar(emp, x="Employment", y="Count", text="Count")
@@ -441,7 +441,7 @@ with tab1:
 
     with c3:
         st.markdown('<div class="chart-card">', unsafe_allow_html=True)
-        age = members_f["Age"].value_counts().reset_index()
+        age = members["Age"].value_counts().reset_index()
         age.columns = ["Age Group", "Count"]
         if not age.empty:
             fig = px.bar(age, x="Age Group", y="Count", text="Count")
