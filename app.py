@@ -319,7 +319,7 @@ members_not_attending = members_f[
 # ----------------------------
 st.markdown("<div class='main-title'>⛪ Church Executive Dashboard</div>", unsafe_allow_html=True)
 st.markdown("<div class='sub-title'>Leadership view of members, attendance, visitors and non-attendance trends</div>", unsafe_allow_html=True)
-
+print(members_f["MemberID"].unique())
 # ----------------------------
 # HELPERS
 # ----------------------------
