@@ -126,25 +126,24 @@ if not attendance.empty:
     attendance.columns = attendance.columns.str.strip()
    
 
-members = members.rename(columns={
-    "First Name?": "First Name",
-    "Surname?": "Surname",
-    "Employment Status?": "Employment Status",
-    "Cellphone?": "Cellphone"
-})
+#members = members.rename(columns={
+ #   "First Name?": "First Name",
+  #  "Surname?": "Surname",
+   # "Employment Status?": "Employment Status",
+    #"Cellphone?": "Cellphone"
+#})
 
 
 #----------------------------
 #CONTINUE APP (tabs etc.)
 #----------------------------
 #tab1, tab2, tab3...
-import random
+#import random
 
 #============================
 #LOCATION MAPPING
 #============================
 
-# Area-based locations (from Address column)
 area_locations = {
     "Polokwane Central": (-23.9045, 29.4689),
     "Bendor": (-23.8890, 29.4740),
