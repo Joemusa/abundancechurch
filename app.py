@@ -463,7 +463,7 @@ with tab2:
     # ----------------------------
     # TOTAL MEMBERS
     # ----------------------------
-    total_members = members_f["MemberID"].nunique()
+    total_members = members["MemberID"].nunique()
 
     with k1:
         show_kpi("Total Members", total_members)
@@ -539,7 +539,7 @@ with tab4:
     k1, k2, k3 = st.columns(3)
 
     with k1:
-        show_kpi("Total Members", members_f["MemberID"].nunique())
+        show_kpi("Total Members", members["MemberID"].nunique())
 
     with k2:
         show_kpi("Male", len(members_f[members_f["Gender"] == "Male"]))
