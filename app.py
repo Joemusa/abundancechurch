@@ -382,14 +382,13 @@ tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9, tab10, tab11 = st.tabs([
     "Intentional Contacts"
 ])
 
-
+print(members_f["MemberID"].unique())
 
 # ============================
 # Demographics
 # ============================
 with tab1:
     k1, k2, k3, k4, k5, k6, k7 = st.columns(7)
-    print(members_f["MemberID"].unique())
     with k1:
         show_kpi("Total Members", members_f["MemberID"].nunique())
 
