@@ -138,7 +138,7 @@ if not attendance.empty:
 #CONTINUE APP (tabs etc.)
 #----------------------------
 #tab1, tab2, tab3...
-#import random
+import random
 
 #============================
 #LOCATION MAPPING
