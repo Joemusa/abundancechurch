@@ -379,7 +379,7 @@ tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9, tab10, tab11 = st.tabs([
 # ============================
 # Demographics
 # ============================
-with tab3:
+with tab2:
     k1, k2, k3, k4, k5, k6, k7 = st.columns(7)
     with k1:
         show_kpi("Total Members", members["MemberID"].nunique())
@@ -447,7 +447,7 @@ with tab3:
 # ----------------------------
 # TOTAL MEMBERS
 # ----------------------------
-with tab2:
+with tab3:
 
     k1, k2, k3 = st.columns(3)
 
