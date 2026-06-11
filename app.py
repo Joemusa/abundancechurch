@@ -606,55 +606,164 @@ with tab7:
 # =========================
 
 with tab8:
-    st.subheader("📩 Send Bulk WhatsApp")
 
-    leader_options = sorted(members["Status"].dropna().unique())
-    selected_leaders = st.multiselect("Select Leader(s)", leader_options)
+    st.subheader("📱 Send Bulk WhatsApp")
 
+    # Zone Leader Dropdown
+    leader_options = sorted(
+        members["Zone Leader"].dropna().unique()
+    )
+
+    selected_leaders = st.multiselect(
+        "Select Zone Leader(s)",
+        leader_options
+    )
+
+    # Filter Members
     if selected_leaders:
-        sms_df = members[members["Status"].isin(selected_leaders)]
+        whatsapp_df = members[
+            members["Zone Leader"].isin(selected_leaders)
+        ]
     else:
-        sms_df = members.copy()
+        whatsapp_df = members.copy()
 
-    recipients = sms_df["Cellphone"].dropna().unique()
+    # Get cellphone numbers
+    recipients = (
+        whatsapp_df["Cellphone"]
+        .dropna()
+        .astype(str)
+        .unique()
+    )
 
+    # Convert SA numbers
     def format_number(num):
-        num = str(num)
+
+        num = str(num).strip()
+
+        num = num.replace(" ", "")
+        num = num.replace("-", "")
+
         if num.startswith("0"):
             return "27" + num[1:]
+
         return num
 
     recipients = [format_number(n) for n in recipients]
 
-    message = st.text_area("Message", max_chars=160)
+    st.write(f"Recipients: {len(recipients)}")
 
-    if st.button("Send WHARSAPP", key="bulksms"):
-        for number in recipients:
-            url = "https://api.bulksms.com/v1/messages"
+    message = st.text_area(
+        "WhatsApp Message",
+        height=150
+    )
 
-            payload = {
-                "to": number,
-                "body": message
-            }
+    # ==================================
+    # SEND WHATSAPP
+    # ==================================
+    if st.button("Send WhatsApp", key="bulkwhatsapp"):
 
-            try:
-                response = requests.post(
-                    url,
-                    json=payload,
-                    headers = {
-                        "Authorization": st.secrets["BULKSMS_AUTH"],
-                        "Content-Type": "application/json"
-                    }
+        if not message.strip():
+            st.warning("Please enter a message")
+
+        elif len(recipients) == 0:
+            st.warning("No recipients found")
+
+        else:
+
+            send_success = True
+            success_count = 0
+            failed_count = 0
+
+            progress_bar = st.progress(0)
+
+            for i, number in enumerate(recipients):
+
+                url = "https://api.bulksms.com/v1/messages"
+
+                payload = {
+                    "to": number,
+                    "body": message
+                }
+
+                try:
+
+                    response = requests.post(
+                        url,
+                        json=payload,
+                        headers={
+                            "Authorization": st.secrets["BULKSMS_AUTH"],
+                            "Content-Type": "application/json"
+                        }
+                    )
+
+                    if response.status_code in [200, 201]:
+
+                        success_count += 1
+
+                    else:
+
+                        failed_count += 1
+                        send_success = False
+
+                        st.error(
+                            f"Failed {number}: {response.text}"
+                        )
+
+                except Exception as e:
+
+                    failed_count += 1
+                    send_success = False
+
+                    st.error(
+                        f"Error {number}: {e}"
+                    )
+
+                progress_bar.progress(
+                    (i + 1) / len(recipients)
                 )
 
-                if response.status_code in [200, 201]:
-                    st.success(f"Sent to {number}")
-                else:
-                    st.error(f"Failed {number}: {response.text}")
+            # ==================================
+            # UPDATE COLUMN R
+            # ==================================
+            if success_count > 0:
 
-            except Exception as e:
-                st.error(f"Error {number}: {e}")
+                timestamp = datetime.now().strftime(
+                    "%Y-%m-%d %H:%M:%S"
+                )
 
+                all_values = worksheet.get_all_values()
+
+                updates = []
+
+                for row_num, row in enumerate(
+                    all_values[1:],
+                    start=2
+                ):
+
+                    zone_leader = row[2]  # Column C
+
+                    if zone_leader in selected_leaders:
+
+                        updates.append({
+                            "range": f"R{row_num}",
+                            "values": [[timestamp]]
+                        })
+
+                if updates:
+
+                    worksheet.batch_update(updates)
+
+                    st.success(
+                        f"✅ Updated Column R for "
+                        f"{len(updates)} members"
+                    )
+
+            # Summary
+            st.success(
+                f"WhatsApp Complete: "
+                f"{success_count} Sent | "
+                f"{failed_count} Failed"
+            )
 #-----------------------------
 # MAP
 # ----------------------------
