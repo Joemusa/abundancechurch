@@ -710,7 +710,6 @@ with tab8:
     # ---------------------------------
 
     if st.button("Send WhatsApp"):
-        st.write("Send button clicked")
 
         if whatsapp_df.empty:
 
