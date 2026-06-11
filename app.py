@@ -823,7 +823,7 @@ with tab8:
                     try:
 
                         cellphone = (
-                            str(row[12])  # <-- adjust if cellphone column differs
+                            str(row[9])
                             .replace(" ", "")
                             .replace("-", "")
                         )
@@ -848,7 +848,8 @@ with tab8:
                 f"✅ Completed: "
                 f"{success_count} Sent | "
                 f"{failed_count} Failed"
-            )#-----------------------------
+            )
+#-----------------------------
 # MAP
 # ----------------------------
 
