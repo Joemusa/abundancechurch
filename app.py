@@ -114,6 +114,11 @@ client = gspread.authorize(creds)
 # ----------------------------
 # LOAD DATA
 # ----------------------------
+members_sheet = client.open("ChurchApp").worksheet("Members")
+
+members = pd.DataFrame(
+    members_sheet.get_all_records()
+)
 members = pd.DataFrame(client.open("ChurchApp").worksheet("Members").get_all_records())
 attendance = pd.DataFrame(client.open("ChurchApp").worksheet("Attendance").get_all_records())
 tithing = pd.DataFrame(client.open("ChurchApp").worksheet("Tithing").get_all_records())
@@ -725,7 +730,8 @@ with tab8:
 
         else:
 
-            all_values = worksheet.get_all_values()
+          
+            all_values = members_sheet.get_all_values()
 
             updates = []
 
@@ -766,7 +772,7 @@ with tab8:
 
             if updates:
 
-                worksheet.batch_update(updates)
+                members_sheet.batch_update(updates)
 
                 st.success(
                     f"✅ {len(updates)} recipients queued for WhatsApp"
