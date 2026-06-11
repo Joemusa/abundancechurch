@@ -421,6 +421,7 @@ with tab2:
 
     with c2:
         st.markdown('<div class="chart-card">', unsafe_allow_html=True)
+        st.markdown("<h4 style='color:white;'>Employment Status</h4>", unsafe_allow_html=True)
         emp = members["Employment Status"].value_counts().reset_index()
         emp.columns = ["Employment", "Count"]
         if not emp.empty:
@@ -433,6 +434,7 @@ with tab2:
 
     with c3:
         st.markdown('<div class="chart-card">', unsafe_allow_html=True)
+        st.markdown("<h4 style='color:white;'>Age Distribution</h4>", unsafe_allow_html=True)
         age = members["Age"].value_counts().reset_index()
         age.columns = ["Age Group", "Count"]
         if not age.empty:
