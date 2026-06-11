@@ -609,25 +609,91 @@ with tab8:
 
     st.subheader("📱 Send Bulk WhatsApp")
 
-    # Zone Leader Dropdown
-    leader_options = sorted(
-        members["Zone Leader"].dropna().unique()
-    )
+    # ---------------------------------
+    # RECIPIENT TYPE
+    # ---------------------------------
 
-    selected_leaders = st.multiselect(
-        "Select Zone Leader(s)",
-        leader_options
-    )
-
-    # Filter Members
-    if selected_leaders:
-        whatsapp_df = members[
-            members["Zone Leader"].isin(selected_leaders)
+    recipient_type = st.selectbox(
+        "Recipient Type",
+        [
+            "Zone Leaders Only",
+            "Members Under Zone Leader",
+            "Pastors Only",
+            "Members Only"
         ]
-    else:
-        whatsapp_df = members.copy()
+    )
 
-    # Get cellphone numbers
+    whatsapp_df = pd.DataFrame()
+
+    # ---------------------------------
+    # FILTER RECIPIENTS
+    # ---------------------------------
+
+    if recipient_type == "Zone Leaders Only":
+
+        whatsapp_df = members[
+            members["Status"].str.strip().str.lower() == "zone leader"
+        ]
+
+    elif recipient_type == "Pastors Only":
+
+        whatsapp_df = members[
+            members["Status"].str.strip().str.lower() == "pastor"
+        ]
+
+    elif recipient_type == "Members Only":
+
+        whatsapp_df = members[
+            members["Status"].str.strip().str.lower() == "member"
+        ]
+
+    elif recipient_type == "Members Under Zone Leader":
+
+        leader_options = sorted(
+            members["Zone Leader"]
+            .dropna()
+            .astype(str)
+            .unique()
+        )
+
+        selected_leaders = st.multiselect(
+            "Select Zone Leader(s)",
+            leader_options
+        )
+
+        if selected_leaders:
+
+            whatsapp_df = members[
+                members["Zone Leader"].isin(selected_leaders)
+            ]
+
+    # ---------------------------------
+    # SHOW RECIPIENTS
+    # ---------------------------------
+
+    st.info(
+        f"Recipients Selected: {len(whatsapp_df)}"
+    )
+
+    if not whatsapp_df.empty:
+
+        st.dataframe(
+            whatsapp_df[
+                [
+                    "First Name",
+                    "Surname",
+                    "Status",
+                    "Zone Leader",
+                    "Cellphone"
+                ]
+            ],
+            use_container_width=True
+        )
+
+    # ---------------------------------
+    # BUILD RECIPIENT LIST
+    # ---------------------------------
+
     recipients = (
         whatsapp_df["Cellphone"]
         .dropna()
@@ -635,7 +701,6 @@ with tab8:
         .unique()
     )
 
-    # Convert SA numbers
     def format_number(num):
 
         num = str(num).strip()
@@ -648,29 +713,40 @@ with tab8:
 
         return num
 
-    recipients = [format_number(n) for n in recipients]
+    recipients = [
+        format_number(n)
+        for n in recipients
+    ]
 
-    st.write(f"Recipients: {len(recipients)}")
+    # ---------------------------------
+    # MESSAGE
+    # ---------------------------------
 
     message = st.text_area(
         "WhatsApp Message",
         height=150
     )
 
-    # ==================================
-    # SEND WHATSAPP
-    # ==================================
-    if st.button("Send WhatsApp", key="bulkwhatsapp"):
+    # ---------------------------------
+    # SEND BUTTON
+    # ---------------------------------
 
-        if not message.strip():
-            st.warning("Please enter a message")
+    if st.button("Send WhatsApp"):
 
-        elif len(recipients) == 0:
-            st.warning("No recipients found")
+        if whatsapp_df.empty:
+
+            st.warning(
+                "Please select recipients first."
+            )
+
+        elif not message.strip():
+
+            st.warning(
+                "Please enter a message."
+            )
 
         else:
 
-            send_success = True
             success_count = 0
             failed_count = 0
 
@@ -678,18 +754,14 @@ with tab8:
 
             for i, number in enumerate(recipients):
 
-                url = "https://api.bulksms.com/v1/messages"
-
-                payload = {
-                    "to": number,
-                    "body": message
-                }
-
                 try:
 
                     response = requests.post(
-                        url,
-                        json=payload,
+                        "https://api.bulksms.com/v1/messages",
+                        json={
+                            "to": number,
+                            "body": message
+                        },
                         headers={
                             "Authorization": st.secrets["BULKSMS_AUTH"],
                             "Content-Type": "application/json"
@@ -703,28 +775,28 @@ with tab8:
                     else:
 
                         failed_count += 1
-                        send_success = False
 
                         st.error(
-                            f"Failed {number}: {response.text}"
+                            f"Failed {number}: "
+                            f"{response.text}"
                         )
 
                 except Exception as e:
 
                     failed_count += 1
-                    send_success = False
 
                     st.error(
-                        f"Error {number}: {e}"
+                        f"Error sending to {number}: {e}"
                     )
 
                 progress_bar.progress(
                     (i + 1) / len(recipients)
                 )
 
-            # ==================================
+            # ---------------------------------
             # UPDATE COLUMN R
-            # ==================================
+            # ---------------------------------
+
             if success_count > 0:
 
                 timestamp = datetime.now().strftime(
@@ -735,36 +807,48 @@ with tab8:
 
                 updates = []
 
+                recipient_numbers = set(
+                    whatsapp_df["Cellphone"]
+                    .dropna()
+                    .astype(str)
+                    .str.replace(" ", "")
+                    .str.replace("-", "")
+                )
+
                 for row_num, row in enumerate(
                     all_values[1:],
                     start=2
                 ):
 
-                    zone_leader = row[2]  # Column C
+                    try:
 
-                    if zone_leader in selected_leaders:
+                        cellphone = (
+                            str(row[12])  # <-- adjust if cellphone column differs
+                            .replace(" ", "")
+                            .replace("-", "")
+                        )
 
-                        updates.append({
-                            "range": f"R{row_num}",
-                            "values": [[timestamp]]
-                        })
+                        if cellphone in recipient_numbers:
+
+                            updates.append({
+                                "range": f"R{row_num}",
+                                "values": [[
+                                    f"WhatsApp Sent - {timestamp}"
+                                ]]
+                            })
+
+                    except:
+                        pass
 
                 if updates:
 
                     worksheet.batch_update(updates)
 
-                    st.success(
-                        f"✅ Updated Column R for "
-                        f"{len(updates)} members"
-                    )
-
-            # Summary
             st.success(
-                f"WhatsApp Complete: "
+                f"✅ Completed: "
                 f"{success_count} Sent | "
                 f"{failed_count} Failed"
-            )
-#-----------------------------
+            )#-----------------------------
 # MAP
 # ----------------------------
 
