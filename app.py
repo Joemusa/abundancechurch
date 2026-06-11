@@ -629,22 +629,28 @@ with tab8:
     # FILTER RECIPIENTS
     # ---------------------------------
 
+    members["Status"] = (
+        members["Status"]
+        .astype(str)
+        .str.strip()
+    )
+
     if recipient_type == "Zone Leaders Only":
 
         whatsapp_df = members[
-            members["Status"].str.strip().str.lower() == "zone leader"
+            members["Status"].str.lower() == "zone leader"
         ]
 
     elif recipient_type == "Pastors Only":
 
         whatsapp_df = members[
-            members["Status"].str.strip().str.lower() == "pastor"
+            members["Status"].str.lower() == "pastor"
         ]
 
     elif recipient_type == "Members Only":
 
         whatsapp_df = members[
-            members["Status"].str.strip().str.lower() == "member"
+            members["Status"].str.lower() == "member"
         ]
 
     elif recipient_type == "Members Under Zone Leader":
@@ -691,34 +697,6 @@ with tab8:
         )
 
     # ---------------------------------
-    # BUILD RECIPIENT LIST
-    # ---------------------------------
-
-    recipients = (
-        whatsapp_df["Cellphone"]
-        .dropna()
-        .astype(str)
-        .unique()
-    )
-
-    def format_number(num):
-
-        num = str(num).strip()
-
-        num = num.replace(" ", "")
-        num = num.replace("-", "")
-
-        if num.startswith("0"):
-            return "27" + num[1:]
-
-        return num
-
-    recipients = [
-        format_number(n)
-        for n in recipients
-    ]
-
-    # ---------------------------------
     # MESSAGE
     # ---------------------------------
 
@@ -747,108 +725,58 @@ with tab8:
 
         else:
 
-            success_count = 0
-            failed_count = 0
+            all_values = worksheet.get_all_values()
 
-            progress_bar = st.progress(0)
+            updates = []
 
-            for i, number in enumerate(recipients):
+            recipient_numbers = set(
+                whatsapp_df["Cellphone"]
+                .dropna()
+                .astype(str)
+                .str.replace(" ", "", regex=False)
+                .str.replace("-", "", regex=False)
+            )
+
+            for row_num, row in enumerate(
+                all_values[1:],
+                start=2
+            ):
 
                 try:
 
-                    response = requests.post(
-                        "https://api.bulksms.com/v1/messages",
-                        json={
-                            "to": number,
-                            "body": message
-                        },
-                        headers={
-                            "Authorization": st.secrets["BULKSMS_AUTH"],
-                            "Content-Type": "application/json"
-                        }
+                    # Column J = Cellphone
+                    cellphone = (
+                        str(row[9])
+                        .replace(" ", "")
+                        .replace("-", "")
                     )
 
-                    if response.status_code in [200, 201]:
+                    if cellphone in recipient_numbers:
 
-                        success_count += 1
+                        updates.append({
+                            "range": f"R{row_num}:S{row_num}",
+                            "values": [[
+                                "YES",
+                                message
+                            ]]
+                        })
 
-                    else:
+                except Exception:
+                    pass
 
-                        failed_count += 1
+            if updates:
 
-                        st.error(
-                            f"Failed {number}: "
-                            f"{response.text}"
-                        )
+                worksheet.batch_update(updates)
 
-                except Exception as e:
-
-                    failed_count += 1
-
-                    st.error(
-                        f"Error sending to {number}: {e}"
-                    )
-
-                progress_bar.progress(
-                    (i + 1) / len(recipients)
+                st.success(
+                    f"✅ {len(updates)} recipients queued for WhatsApp"
                 )
 
-            # ---------------------------------
-            # UPDATE COLUMN R
-            # ---------------------------------
+            else:
 
-            if success_count > 0:
-
-                timestamp = datetime.now().strftime(
-                    "%Y-%m-%d %H:%M:%S"
+                st.warning(
+                    "No matching recipients found."
                 )
-
-                all_values = worksheet.get_all_values()
-
-                updates = []
-
-                recipient_numbers = set(
-                    whatsapp_df["Cellphone"]
-                    .dropna()
-                    .astype(str)
-                    .str.replace(" ", "")
-                    .str.replace("-", "")
-                )
-
-                for row_num, row in enumerate(
-                    all_values[1:],
-                    start=2
-                ):
-
-                    try:
-
-                        cellphone = (
-                            str(row[9])
-                            .replace(" ", "")
-                            .replace("-", "")
-                        )
-
-                        if cellphone in recipient_numbers:
-
-                            updates.append({
-                                "range": f"R{row_num}",
-                                "values": [[
-                                    f"WhatsApp Sent - {timestamp}"
-                                ]]
-                            })
-
-                    except:
-                        pass
-
-                if updates:
-
-                    worksheet.batch_update(updates)
-
-            st.success(
-                f"✅ Completed: "
-                f"{success_count} Sent | "
-                f"{failed_count} Failed"
-            )
 #-----------------------------
 # MAP
 # ----------------------------
