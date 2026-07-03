@@ -135,24 +135,43 @@ export default function WhatsappTab({ members, isAdmin }: { members: Member[]; i
       {recipientType === "Specific member" && (
         <div className="mb-3">
           <input
-            placeholder="Search by name..."
+            placeholder="Search member by name..."
             value={memberSearch}
             onChange={(e) => { setMemberSearch(e.target.value); setSelectedMemberId(""); }}
             className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm mb-2"
+            autoFocus
           />
-          <select
-            value={selectedMemberId}
-            onChange={(e) => setSelectedMemberId(e.target.value)}
-            className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
-            size={Math.min(filteredMembers.length, 6)}
-          >
-            <option value="">— Select a member —</option>
-            {filteredMembers.map((m) => (
-              <option key={m.id} value={m.id}>
-                {m.first_name} {m.surname} {m.branch ? `· ${m.branch}` : ""}
-              </option>
-            ))}
-          </select>
+          {/* Show results only when searching */}
+          {memberSearch.trim().length > 0 && (
+            <div className="border border-gray-200 rounded-md overflow-hidden max-h-48 overflow-y-auto">
+              {filteredMembers.length === 0 ? (
+                <p className="text-sm text-gray-400 px-3 py-2">No members found</p>
+              ) : (
+                filteredMembers.map((m) => (
+                  <button
+                    key={m.id}
+                    type="button"
+                    onClick={() => {
+                      setSelectedMemberId(m.id);
+                      setMemberSearch(`${m.first_name} ${m.surname}`);
+                    }}
+                    className={`w-full text-left px-3 py-2 text-sm hover:bg-gray-50 border-b border-gray-100 last:border-0 ${
+                      selectedMemberId === m.id ? "bg-teal-50 text-teal-700" : ""
+                    }`}
+                  >
+                    <span className="font-medium">{m.first_name} {m.surname}</span>
+                    {m.branch && <span className="text-gray-400 text-xs ml-2">· {m.branch}</span>}
+                    {m.zone_leader && <span className="text-gray-400 text-xs ml-1">· {m.zone_leader}</span>}
+                  </button>
+                ))
+              )}
+            </div>
+          )}
+          {selectedMemberId && (
+            <p className="text-xs text-teal-700 mt-1">
+              ✓ {memberSearch} selected
+            </p>
+          )}
         </div>
       )}
 
