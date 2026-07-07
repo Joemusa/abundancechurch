@@ -14,12 +14,37 @@ export type Member = {
   study_field: string;
   school_grade: string;
   zone_leader: string;
+  pastor: string;
   status: string;
   address: string;
   latitude: number | null;
   longitude: number | null;
   registered_at: string | null;
   created_at: string;
+};
+
+export type Ministry = {
+  id: string;
+  name: string;
+  leader: string;
+  created_at: string;
+};
+
+export type ServiceDepartment = {
+  id: string;
+  name: string;
+  leader: string;
+  created_at: string;
+};
+
+export type MemberMinistry = {
+  member_id: string;
+  ministry_id: string;
+};
+
+export type MemberServiceDepartment = {
+  member_id: string;
+  service_department_id: string;
 };
 
 export type Attendance = {

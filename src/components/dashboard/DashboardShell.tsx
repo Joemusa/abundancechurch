@@ -5,12 +5,17 @@ import {
   LayoutDashboard, Users, TrendingUp, CalendarCheck, UserPlus,
   UserX, HandCoins, MessageCircle, Map as MapIcon, CalendarDays,
   Footprints, LogOut, SlidersHorizontal, X, ShieldCheck, QrCode, Settings,
+  UserCheck,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
-import type { Member, Attendance, Tithing, IntentionalContact, EventRecord } from "@/lib/types";
+import type {
+  Member, Attendance, Tithing, IntentionalContact, EventRecord,
+  Ministry, ServiceDepartment, MemberMinistry, MemberServiceDepartment,
+} from "@/lib/types";
 import KpiCard from "./KpiCard";
 import OverviewTab from "./OverviewTab";
 import MembersTab from "./MembersTab";
+import AssignMembersTab from "./AssignMembersTab";
 import GrowthTab from "./GrowthTab";
 import AttendanceTab from "./AttendanceTab";
 import VisitorsTab from "./VisitorsTab";
@@ -27,6 +32,7 @@ import SettingsTab from "./SettingsTab";
 const TABS = [
   { key: "overview", label: "Overview", icon: LayoutDashboard },
   { key: "members", label: "Members", icon: Users },
+  { key: "assign", label: "Assign Members", icon: UserCheck },
   { key: "growth", label: "Growth", icon: TrendingUp },
   { key: "attendance", label: "Attendance", icon: CalendarCheck },
   { key: "visitors", label: "New visitors", icon: UserPlus },
@@ -118,6 +124,10 @@ export default function DashboardShell({ churchName, email, isAdmin }: Props) {
   const [messagesSent, setMessagesSent] = useState(0);
   const [contacts, setContacts] = useState<IntentionalContact[]>([]);
   const [events, setEvents] = useState<EventRecord[]>([]);
+  const [ministries, setMinistries] = useState<Ministry[]>([]);
+  const [serviceDepartments, setServiceDepartments] = useState<ServiceDepartment[]>([]);
+  const [memberMinistries, setMemberMinistries] = useState<MemberMinistry[]>([]);
+  const [memberServiceDepartments, setMemberServiceDepartments] = useState<MemberServiceDepartment[]>([]);
   const [activeTab, setActiveTab] = useState<TabKey>("overview");
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -131,13 +141,20 @@ export default function DashboardShell({ churchName, email, isAdmin }: Props) {
 
   const loadData = useCallback(async () => {
     setLoading(true);
-    const [{ data: m }, { data: a }, { data: t }, { count: wCount }, { data: e }, { data: ic }] = await Promise.all([
+    const [
+      { data: m }, { data: a }, { data: t }, { count: wCount }, { data: e }, { data: ic },
+      { data: mins }, { data: depts }, { data: mm }, { data: msd },
+    ] = await Promise.all([
       supabase.from("members").select("*").order("created_at", { ascending: false }),
       supabase.from("attendance").select("*").order("attendance_date", { ascending: false }),
       supabase.from("tithing").select("*").order("tithe_date", { ascending: false }),
       supabase.from("whatsapp_logs").select("*", { count: "exact", head: true }),
       supabase.from("events").select("*").order("event_date", { ascending: false }),
       supabase.from("intentional_contacts").select("*").order("visit_date", { ascending: false }),
+      supabase.from("ministries").select("*").order("name", { ascending: true }),
+      supabase.from("service_departments").select("*").order("name", { ascending: true }),
+      supabase.from("member_ministries").select("*"),
+      supabase.from("member_service_departments").select("*"),
     ]);
     setMembers(m ?? []);
     setAttendance(a ?? []);
@@ -145,6 +162,10 @@ export default function DashboardShell({ churchName, email, isAdmin }: Props) {
     setMessagesSent(wCount ?? 0);
     setEvents(e ?? []);
     setContacts(ic ?? []);
+    setMinistries(mins ?? []);
+    setServiceDepartments(depts ?? []);
+    setMemberMinistries(mm ?? []);
+    setMemberServiceDepartments(msd ?? []);
     setLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -160,6 +181,31 @@ export default function DashboardShell({ churchName, email, isAdmin }: Props) {
         (!employment || m.employment_status === employment)
     ),
     [members, gender, leader, branch, employment]
+  );
+
+  // Members missing Pastor, Zonal Leader, at least one Ministry, or at
+  // least one Service Department. Nothing is ever stored to mark this -
+  // it's derived fresh from the actual data each time, so a member drops
+  // off this list the instant all four pieces are filled in.
+  const ministryMemberIds = useMemo(
+    () => new Set(memberMinistries.map((mm) => mm.member_id)),
+    [memberMinistries]
+  );
+  const deptMemberIds = useMemo(
+    () => new Set(memberServiceDepartments.map((md) => md.member_id)),
+    [memberServiceDepartments]
+  );
+  const pendingAssignmentMembers = useMemo(
+    () =>
+      membersF.filter(
+        (m) =>
+          !m.pastor?.trim() ||
+          !m.zone_leader?.trim() ||
+          !m.member_id ||
+          !ministryMemberIds.has(m.member_id) ||
+          !deptMemberIds.has(m.member_id)
+      ),
+    [membersF, ministryMemberIds, deptMemberIds]
   );
 
   // Set of member_ids that pass the current member-level filters (branch/gender/
@@ -578,6 +624,15 @@ export default function DashboardShell({ churchName, email, isAdmin }: Props) {
                 }`}
               >
                 <Icon className="w-4 h-4" /> {label}
+                {key === "assign" && pendingAssignmentMembers.length > 0 && (
+                  <span
+                    className={`ml-0.5 text-[10px] font-semibold rounded-full px-1.5 py-0.5 ${
+                      activeTab === key ? "bg-white/20 text-white" : "bg-amber-100 text-amber-700"
+                    }`}
+                  >
+                    {pendingAssignmentMembers.length}
+                  </span>
+                )}
               </button>
             ))}
             {/* Check-in QR — all logged-in leaders can print QR codes */}
@@ -631,6 +686,19 @@ export default function DashboardShell({ churchName, email, isAdmin }: Props) {
             )}
             {activeTab === "members" && (
               <MembersTab members={membersF} onDeleted={loadData} />
+            )}
+            {activeTab === "assign" && (
+              <AssignMembersTab
+                pendingMembers={pendingAssignmentMembers}
+                allMembers={membersF}
+                ministries={ministries}
+                serviceDepartments={serviceDepartments}
+                memberMinistries={memberMinistries}
+                memberServiceDepartments={memberServiceDepartments}
+                pastorOptions={unique(members, "pastor")}
+                zoneLeaderOptions={unique(members, "zone_leader")}
+                onChanged={loadData}
+              />
             )}
             {activeTab === "growth" && <GrowthTab members={membersF} attendance={attendanceF} />}
             {activeTab === "attendance" && (
